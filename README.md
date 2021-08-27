@@ -1,4 +1,4 @@
 # tarting.github.io
 Personal website
 
-Generated with [Hugo][https://gohugo.io].
+Generated with [Hugo](https://gohugo.io).
