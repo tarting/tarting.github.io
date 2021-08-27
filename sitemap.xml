@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://tarting.github.io/categories/</loc>
+  </url>
+  
+  <url>
+    <loc>http://tarting.github.io/reachme/</loc>
+  </url>
+  
+  <url>
+    <loc>http://tarting.github.io/research/</loc>
+  </url>
+  
+  <url>
+    <loc>http://tarting.github.io/resume/</loc>
+  </url>
+  
+  <url>
+    <loc>http://tarting.github.io/</loc>
+  </url>
+  
+  <url>
+    <loc>http://tarting.github.io/tags/</loc>
+  </url>
+  
+</urlset>

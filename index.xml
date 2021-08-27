@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Resume on Trygvi Bech Árting</title>
+    <link>http://tarting.github.io/</link>
+    <description>Recent content in Resume on Trygvi Bech Árting</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language><atom:link href="http://tarting.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Reach Me</title>
+      <link>http://tarting.github.io/reachme/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://tarting.github.io/reachme/</guid>
+      <description>Reach me at  e-mail: trygvi@gmail.com
+telephone: +45 5031 0807
+Physical address   Lærkevej 1, st. 1
+DK-2400 Copenhagen NV
+Denmark
+ Social media ResearchGate
+GitHub
+Facebook</description>
+    </item>
+    
+    <item>
+      <title>Research</title>
+      <link>http://tarting.github.io/research/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://tarting.github.io/research/</guid>
+      <description>Research Interest My current research interests derive from my desire to apply novel analytical approaches to understanding ancient Earth processes. Including development of the hydrosphere and atmosphere, as well as understanding orogenic igneous processes. I am currently working on tracing atmospheric oxygen in the Late Neoproterozoic in banded iron formations and carbonates in Brazil and Canada, on the petrology of the noritic Tasiilaq Intrusion, South-East Greenland, and the behaviour of Cr isotopes in the Paleoproterozoic Quadrilátero Ferífero banded iron formation.</description>
+    </item>
+    
+    <item>
+      <title>Resume</title>
+      <link>http://tarting.github.io/resume/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://tarting.github.io/resume/</guid>
+      <description>About me  Halló, I am a geologist from the Faroe Islands, currently based in Copenhagen Denmark. Until recently I&amp;rsquo;ve been emplyoed as a PhD-student at the University of Copenhagen. During my stay I implemented new data reduction schemes for the mass spectrometry lab (TIMS), and established methods for trace metal analysis in geological samples using inductively coupled plasma mass spectrometry (ICP-MS, Bruker Aurora Elite), and was involved in method development for laser ablation ICP-MS in a newly established laboratory (Teledyne CETAC Analyte Excite coupled with Agilent 7900 ICP-MS).</description>
+    </item>
+    
+  </channel>
+</rss>
