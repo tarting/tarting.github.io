@@ -1,0 +1,55 @@
+{
+  "thumbnailWidth": 225,
+  "thumbnailHeight": 225,
+  "locationHash": false,
+
+  "thumbnailAlignment": "center",
+  "thumbnailLabel": { 
+    "display": false,
+    "valign": "bottom",
+    "position": "onBottom",
+    "hideIcons": true,
+    "title": "%filenameNoExt",
+    "displayDescription": false
+  },
+
+  "thumbnailGutterWidth": 20,
+  "thumbnailGutterHeight": 20,
+  "thumbnailBorderVertical": 0,
+  "thumbnailBorderHorizontal": 0,
+  
+  "thumbnailDisplayTransition":          "slideUp",
+  "thumbnailDisplayTransitionDuration":  350,  
+  "thumbnailDisplayInterval":            20,   
+  "galleryDisplayTransition":            "slideUp",
+  "galleryDisplayTransitionDuration":    350,
+  "thumbnailHoverEffect2": "scale120",
+
+  "viewerToolbar":   {
+    "display":    false
+  },
+  "viewerTools":     {
+    "topLeft":    "pageCounter",
+    "topRight":   "shareButton, fullscreenButton, closeButton"
+  },
+
+  "galleryTheme": {
+    "thumbnail" : { 
+      "borderColor": "#fff",
+          "borderRadius": "0px"
+     }
+  },
+  "colorSchemeViewer": "dark",
+  "viewerTheme": {
+    "background": "#000",
+    "barBackground": "rgba(255, 255, 255, 1.0)",
+    "barBorder": "0px solid #000",
+    "barColor": "#fff",
+    "barDescriptionColor":"fff"
+  },
+  "icons": {
+    "viewerImgPrevious": "<i></i>",
+    "viewerImgNext": "<i></i>"
+  }
+}
+
