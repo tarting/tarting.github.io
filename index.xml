@@ -16,12 +16,23 @@
     </item>
     
     <item>
-      <title>Pysotope</title>
-      <link>http://tarting.github.io/repository/pysotope/</link>
+      <title>Config</title>
+      <link>http://tarting.github.io/repository/pysotope/config/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>http://tarting.github.io/repository/pysotope/</guid>
-      <description>A Python 3 module and command line tool for reducing Double Spike Isotope measurements acquired on the IsoprobeT and Phoenix instruments at the Geology Section at the University of Copenhagen. This piece of software was developed in particular for doing data reduction on chromium isotope measurements. New isotope systems are easily implemented using json configuration files, and new spikes can also be calibrated automatically on the basis of measured spike-standard mixtures.</description>
+      <guid>http://tarting.github.io/repository/pysotope/config/</guid>
+      <description>&lt;p&gt;The pysotope package is highly configurable using javascript object notation files for storing isotope system configuration.
+These files contain all information about how to read the data files, which filetype plugin to use, spike-standard compostion etc.
+Here an example configuration file is presented with comments on each parameter. Comments are not allowed in the regular json files used for data reduction.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Readme</title>
+      <link>http://tarting.github.io/repository/pysotope/readme/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://tarting.github.io/repository/pysotope/readme/</guid>
+      <description>&lt;p&gt;Pysotope uses a hillclimbing algorithm to unmix spike and sample isotope composition, by calculating mass dependent instrument and natural isotope fractionation from a known standard. This yields sample isotope composition and concentration for the element of interest.&lt;/p&gt;</description>
     </item>
     
     <item>

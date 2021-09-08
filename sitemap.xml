@@ -11,11 +11,19 @@
   </url>
   
   <url>
+    <loc>http://tarting.github.io/repository/</loc>
+  </url>
+  
+  <url>
     <loc>http://tarting.github.io/repository/pysotope/</loc>
   </url>
   
   <url>
-    <loc>http://tarting.github.io/repository/</loc>
+    <loc>http://tarting.github.io/repository/pysotope/config/</loc>
+  </url>
+  
+  <url>
+    <loc>http://tarting.github.io/repository/pysotope/readme/</loc>
   </url>
   
   <url>
