@@ -7,6 +7,24 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language><atom:link href="http://tarting.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Kriging and map projection</title>
+      <link>http://tarting.github.io/repository/kriging/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://tarting.github.io/repository/kriging/</guid>
+      <description>&lt;p&gt;An example of kriging and map projection in Python 3. Geopandas is used for reading and plotting data from shapefiles; pyproj for projecting data from geographic coortinates to UTM coordinates; the kriging solution from osgeo, gstools is used to fit the data, and generate conditioned fields; shapely is used to generate geometries; scipy.ndimage is used for vector-raster arithmetic; numpy for array manipulations; and matplotlib for ploting maps.&lt;/p&gt;</description>
+    </item>
+    
+    <item>
+      <title>Pysotope</title>
+      <link>http://tarting.github.io/repository/pysotope/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://tarting.github.io/repository/pysotope/</guid>
+      <description>A Python 3 module and command line tool for reducing Double Spike Isotope measurements acquired on the IsoprobeT and Phoenix instruments at the Geology Section at the University of Copenhagen. This piece of software was developed in particular for doing data reduction on chromium isotope measurements. New isotope systems are easily implemented using json configuration files, and new spikes can also be calibrated automatically on the basis of measured spike-standard mixtures.</description>
+    </item>
+    
+    <item>
       <title>T. B. Árting: Reach Me</title>
       <link>http://tarting.github.io/reachme/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -35,6 +53,15 @@ Facebook</description>
       
       <guid>http://tarting.github.io/resume/</guid>
       <description>About me  Halló, I am a geologist from the Faroe Islands, currently based in Copenhagen Denmark. Until recently I&amp;rsquo;ve been employed as a PhD-student at the University of Copenhagen. During my stay I implemented new data reduction schemes for the mass spectrometry lab (TIMS), and established methods for trace metal analysis in geological samples using inductively coupled plasma mass spectrometry (ICP-MS, Bruker Aurora Elite), and was involved in method development for laser ablation ICP-MS in a newly established laboratory (Teledyne CETAC Analyte Excite coupled with Agilent 7900 ICP-MS).</description>
+    </item>
+    
+    <item>
+      <title>tarting.xyz</title>
+      <link>http://tarting.github.io/repository/tarting.xyz/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>http://tarting.github.io/repository/tarting.xyz/</guid>
+      <description>Source code for this website at github.com/tarting/tarting.xyz. The website was is generated using the hugo static website generator, heavily based on the researcher theme. Gallery functionality is provided by nanogallery2 following mertbakirs guide. Nanogallery2 and single image displays on the site depend on lightbox2.</description>
     </item>
     
   </channel>

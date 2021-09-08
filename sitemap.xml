@@ -7,6 +7,18 @@
   </url>
   
   <url>
+    <loc>http://tarting.github.io/repository/kriging/</loc>
+  </url>
+  
+  <url>
+    <loc>http://tarting.github.io/repository/pysotope/</loc>
+  </url>
+  
+  <url>
+    <loc>http://tarting.github.io/repository/</loc>
+  </url>
+  
+  <url>
     <loc>http://tarting.github.io/reachme/</loc>
   </url>
   
@@ -24,6 +36,10 @@
   
   <url>
     <loc>http://tarting.github.io/tags/</loc>
+  </url>
+  
+  <url>
+    <loc>http://tarting.github.io/repository/tarting.xyz/</loc>
   </url>
   
 </urlset>
