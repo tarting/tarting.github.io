@@ -7,6 +7,14 @@
   </url>
   
   <url>
+    <loc>http://tarting.github.io/repository/isochron/errorelipses/</loc>
+  </url>
+  
+  <url>
+    <loc>http://tarting.github.io/repository/isochron/</loc>
+  </url>
+  
+  <url>
     <loc>http://tarting.github.io/repository/kriging/</loc>
   </url>
   
@@ -48,6 +56,10 @@
   
   <url>
     <loc>http://tarting.github.io/repository/tarting.xyz/</loc>
+  </url>
+  
+  <url>
+    <loc>http://tarting.github.io/repository/isochron/yorkfit/</loc>
   </url>
   
 </urlset>

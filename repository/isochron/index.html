@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Project repository</title>
+    <title>Isochron fitting</title>
     <meta name="description" content="Geologist.Researcher.Developer">
     <meta name="author" content='Trygvi Bech Árting'>
 
@@ -18,7 +18,7 @@
         <link rel="icon" type="image/ico" href="http://tarting.github.io/favicon.ico">
     
 
-    <link rel="alternate" type="application/rss+xml" href="http://tarting.github.io/repository/index.xml" title="Trygvi Bech Árting" />
+    <link rel="alternate" type="application/rss+xml" href="http://tarting.github.io/repository/isochron/index.xml" title="Trygvi Bech Árting" />
     
         
     
@@ -70,96 +70,58 @@
 <div id="content">
 <div class="container">
     <div class="projectheader">
-    <h1>Project repository</h1>
+    <h1>Isochron</h1>
     
         <figure class="avatar">
             <img src="img.jpg"/>
         </figure>
     
-    
-This repository contains information on selected software projects of mine. Some are modules presented as readme files with links to the git repository, others are smaller and presented as output from Jupyter notebooks. 
-
+    <p> <p>Code for fitting isochrons on uranium-thorium-lead (U-Th-Pb) isotope data.
+A technical consequence of measuring multiple isotopes of the same element is that the associated errors are highly corellated.
+The U-Th-Pb isotope systems consists of three coupled decay systems: <sup>238</sup>U to <sup>206</sup>Pb, <sup>235</sup>U to <sup>207</sup>Pb and <sup>232</sup>Th to <sup>208</sup>Pb.
+Therefore to obtain the highest amount of geochronological information, multiple lead isotopes are measured in parallel.</p>
+ </p>
     </div>
     <ul>
         
         <p> 
 <div class="repolist">
-    <h2><a href="http://tarting.github.io/repository/isochron/">
-    Isochron fitting
+    <h2><a href="http://tarting.github.io/repository/isochron/errorelipses/">
+    Error ellipses
     </a></h2>
     <hr>
-    <a href="http://tarting.github.io/repository/isochron/">
+    <a href="http://tarting.github.io/repository/isochron/errorelipses/">
     
         <figure class="listimg">
-            <img src=http://tarting.github.io/repository/isochron/img.jpg />
+            <img src=http://tarting.github.io/repository/isochron/errorelipses/img.jpg />
         </figure>
     
     </a>
 
-    <p><a href="http://tarting.github.io/repository/isochron/" class="darklink">
-    Code for fitting isochrons on uranium-thorium-lead (U-Th-Pb) isotope data. A technical consequence of measuring multiple isotopes of the same element is that the associated errors are highly corellated. The U-Th-Pb isotope systems consists of three coupled decay systems: 238U to 206Pb, 235U to 207Pb and 232Th to 208Pb. Therefore to obtain the highest amount of geochronological information, multiple lead isotopes are measured in parallel.
+    <p><a href="http://tarting.github.io/repository/isochron/errorelipses/" class="darklink">
+    <p>In order to graphically convey error corellation in the isotope data, error ellipses must be constructed from measured coordinates in isotope ratio space, the measurement error on each isotope ratio, and the associated error corellation.
+This code calculates the proper coordinates for the error ellipse (default 95% confidence interval).
+In addition, there is a function to calculate the &lsquo;best fit&rsquo; distance to a fitted isochron, to evaluate the misfit of each data point.</p>
     </a></p>
 </div>
  </p>
         
         <p> 
 <div class="repolist">
-    <h2><a href="http://tarting.github.io/repository/kriging/">
-    Kriging and map projection
+    <h2><a href="http://tarting.github.io/repository/isochron/yorkfit/">
+    Yorkfit
     </a></h2>
     <hr>
-
-    <a href="http://tarting.github.io/repository/kriging/">
+    <a href="http://tarting.github.io/repository/isochron/yorkfit/">
     
         <figure class="listimg">
-            <img src=http://tarting.github.io/repository/kriging/img.jpg />
+            <img src=http://tarting.github.io/repository/isochron/yorkfit/img.jpg />
         </figure>
     
     </a>
 
-    <p><a href="http://tarting.github.io/repository/kriging/" class="darklink">
-    <p>An example of kriging and map projection in Python 3. Geopandas is used for reading and plotting data from shapefiles; pyproj for projecting data from geographic coortinates to UTM coordinates; the kriging solution from osgeo, gstools is used to fit the data, and generate conditioned fields; shapely is used to generate geometries; scipy.ndimage is used for vector-raster arithmetic; numpy for array manipulations; and matplotlib for ploting maps.</p>
-    </a></p>
-</div>
- </p>
-        
-        <p> 
-<div class="repolist">
-    <h2><a href="http://tarting.github.io/repository/pysotope/">
-    Pysotope
-    </a></h2>
-    <hr>
-    <a href="http://tarting.github.io/repository/pysotope/">
-    
-        <figure class="listimg">
-            <img src=http://tarting.github.io/repository/pysotope/img.jpg />
-        </figure>
-    
-    </a>
-
-    <p><a href="http://tarting.github.io/repository/pysotope/" class="darklink">
-    A Python 3 module and command line tool for reducing Double Spike Isotope measurements acquired on the IsoprobeT and Phoenix instruments at the Geology Section at the University of Copenhagen. This piece of software was developed in particular for doing data reduction on chromium isotope measurements. New isotope systems are easily implemented using json configuration files, and new spikes can also be calibrated automatically on the basis of measured spike-standard mixtures.
-    </a></p>
-</div>
- </p>
-        
-        <p> 
-<div class="repolist">
-    <h2><a href="http://tarting.github.io/repository/tarting.xyz/">
-    tarting.xyz
-    </a></h2>
-    <hr>
-
-    <a href="http://tarting.github.io/repository/tarting.xyz/">
-    
-        <figure class="listimg">
-            <img src=http://tarting.github.io/repository/tarting.xyz/img.jpg />
-        </figure>
-    
-    </a>
-
-    <p><a href="http://tarting.github.io/repository/tarting.xyz/" class="darklink">
-    Source code for this website at github.com/tarting/tarting.xyz. The website was is generated using the hugo static website generator, heavily based on the researcher theme. Gallery functionality is provided by nanogallery2 following mertbakirs guide. Nanogallery2 and single image displays on the site depend on lightbox2.
+    <p><a href="http://tarting.github.io/repository/isochron/yorkfit/" class="darklink">
+    <p>Implementation of the standard isochron method emplyoed by ISOPLOT (e.g. Ludwig, 2003) as defined in York 1966, 1969 York et al. 2014. The method uses two measured variables with correlated errors.</p>
     </a></p>
 </div>
  </p>

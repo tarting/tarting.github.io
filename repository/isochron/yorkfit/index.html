@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang=""><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Yorkfit</title>
+    <meta name="description" content="Geologist.Researcher.Developer">
+    <meta name="author" content='Trygvi Bech Árting'>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" href="/sass/researcher.min.css">
+
+    
+        <link rel="icon" type="image/ico" href="http://tarting.github.io/favicon.ico">
+    
+
+    
+        
+    
+    
+
+</head>
+
+    <body><div class="container mt-5">
+    <nav class="navbar navbar-expand-sm flex-column flex-sm-row text-nowrap p-0">
+        <a class="navbar-brand mx-0 mr-sm-auto" href="http://tarting.github.io/" title="Trygvi Bech Árting">
+          
+          Trygvi Bech Árting
+        </a>
+        <div class="navbar-nav flex-row flex-wrap justify-content-center">
+            
+                
+                
+                    <a class="nav-item nav-link" href="/resume" title="Resume">
+                        Resume
+                    </a>
+                    
+                        <span class="nav-item navbar-text mx-1">/</span>
+                    
+                
+                    <a class="nav-item nav-link" href="/research" title="Research">
+                        Research
+                    </a>
+                    
+                        <span class="nav-item navbar-text mx-1">/</span>
+                    
+                
+                    <a class="nav-item nav-link" href="/repository" title="Repo">
+                        Repo
+                    </a>
+                    
+                        <span class="nav-item navbar-text mx-1">/</span>
+                    
+                
+                    <a class="nav-item nav-link" href="/reachme" title="Reach me">
+                        Reach me
+                    </a>
+                    
+                
+            
+        </div>
+    </nav>
+</div>
+<hr>
+<div id="content">
+<div class="container">
+<div class="navbar-nav flex-row flex-wrap justify-content-center">
+
+
+    <a class="nav-item nav-link" href=http://tarting.github.io/repository/isochron/> Project </a>
+
+
+    <span class="nav-item navbar-text mx-1">/</span>
+    <a class="nav-item nav-link" href=http://tarting.github.io/repository/isochron/errorelipses/> Next</a>
+
+</div>
+<H1> Yorkfit </H1>
+    
+        <figure class="avatar">
+            <img src="img.jpg"/>
+        </figure>
+    
+    <p>Implementation of the standard isochron method emplyoed by ISOPLOT (e.g. Ludwig, 2003) as defined in York 1966, 1969 York et al. 2014. The method uses two measured variables with correlated errors.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">from</span> pprint <span style="color:#f92672">import</span> pprint
+<span style="color:#f92672">from</span> collections <span style="color:#f92672">import</span> namedtuple
+
+<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">from</span> scipy <span style="color:#f92672">import</span> stats
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
+<span style="color:#f92672">import</span> matplotlib <span style="color:#f92672">as</span> mpl
+
+<span style="color:#f92672">from</span> errorellipse <span style="color:#f92672">import</span> error_ellipse
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Yorkfit <span style="color:#f92672">=</span> namedtuple(<span style="color:#e6db74">&#39;Yorkfit&#39;</span>, [<span style="color:#e6db74">&#39;y0&#39;</span>, <span style="color:#e6db74">&#39;alpha&#39;</span>, 
+                                 <span style="color:#e6db74">&#39;y0_err&#39;</span>, <span style="color:#e6db74">&#39;alpha_err&#39;</span>,
+                                 <span style="color:#e6db74">&#39;MSWD&#39;</span>, <span style="color:#e6db74">&#39;deg_f&#39;</span>, 
+                                 <span style="color:#e6db74">&#39;x_adj&#39;</span>, <span style="color:#e6db74">&#39;y_adj&#39;</span>])
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">york</span>(X, Y, X_err, Y_err, rho<span style="color:#f92672">=</span>None, max_iter<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>, epsilon<span style="color:#f92672">=</span><span style="color:#ae81ff">1e-18</span>):
+    <span style="color:#66d9ef">if</span> rho <span style="color:#f92672">is</span> None:
+        rho <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span><span style="color:#f92672">*</span>X
+    <span style="color:#66d9ef">elif</span> type(rho) <span style="color:#f92672">is</span> float:
+        rho <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>ones(X<span style="color:#f92672">.</span>shape)<span style="color:#f92672">*</span>rho
+
+    <span style="color:#75715e"># Step 1 estimate b</span>
+    b <span style="color:#f92672">=</span> stats<span style="color:#f92672">.</span>linregress(X, Y)<span style="color:#f92672">.</span>intercept
+
+    <span style="color:#75715e"># Step 2 calculate weights</span>
+    w_X <span style="color:#f92672">=</span>  <span style="color:#ae81ff">1</span><span style="color:#f92672">/</span>X_err<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>
+    w_Y <span style="color:#f92672">=</span>  <span style="color:#ae81ff">1</span><span style="color:#f92672">/</span>Y_err<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>
+
+    <span style="color:#75715e"># Iterate over step 3-6</span>
+    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(max_iter):
+        <span style="color:#75715e"># Step 3 evaluate W</span>
+        alpha <span style="color:#f92672">=</span> (w_X<span style="color:#f92672">*</span>w_Y)<span style="color:#f92672">**</span><span style="color:#ae81ff">0.5</span>
+        W <span style="color:#f92672">=</span> (w_X<span style="color:#f92672">*</span>w_Y) <span style="color:#f92672">/</span> (w_X <span style="color:#f92672">+</span> w_Y<span style="color:#f92672">*</span>b<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>b<span style="color:#f92672">*</span>rho<span style="color:#f92672">*</span>alpha)
+
+        <span style="color:#75715e"># Step 4 Calculate X_bar, Y_bar -&gt; U_i V_i beta_i</span>
+        X_bar <span style="color:#f92672">=</span> sum(W<span style="color:#f92672">*</span>X)<span style="color:#f92672">/</span>sum(W)
+        Y_bar <span style="color:#f92672">=</span> sum(W<span style="color:#f92672">*</span>Y)<span style="color:#f92672">/</span>sum(W)
+        U <span style="color:#f92672">=</span> X <span style="color:#f92672">-</span> X_bar
+        V <span style="color:#f92672">=</span> Y <span style="color:#f92672">-</span> Y_bar
+        beta <span style="color:#f92672">=</span> W <span style="color:#f92672">*</span> (U<span style="color:#f92672">/</span>w_Y <span style="color:#f92672">+</span> b<span style="color:#f92672">*</span>V<span style="color:#f92672">/</span>w_X <span style="color:#f92672">-</span>(b<span style="color:#f92672">*</span>U<span style="color:#f92672">+</span>V)<span style="color:#f92672">*</span>rho<span style="color:#f92672">/</span>alpha)
+
+        <span style="color:#75715e"># Step 5</span>
+        b_prev <span style="color:#f92672">=</span> b
+        b <span style="color:#f92672">=</span> sum(W<span style="color:#f92672">*</span>beta<span style="color:#f92672">*</span>V)<span style="color:#f92672">/</span>sum(W<span style="color:#f92672">*</span>beta<span style="color:#f92672">*</span>U)
+
+        <span style="color:#75715e"># Step 6 Iterate if new estimate is worse than desired level</span>
+        <span style="color:#66d9ef">if</span> abs(b<span style="color:#f92672">-</span>b_prev) <span style="color:#f92672">&lt;</span> epsilon:
+<span style="color:#75715e">#             print(&#39;iterations&#39;, i)</span>
+            <span style="color:#66d9ef">break</span>
+
+    <span style="color:#75715e"># Step 7 calculate a</span>
+    a <span style="color:#f92672">=</span> Y_bar <span style="color:#f92672">-</span> b<span style="color:#f92672">*</span>X_bar
+
+    <span style="color:#75715e"># Step 8 calculate adjusted values x and y</span>
+    x <span style="color:#f92672">=</span> X_bar <span style="color:#f92672">+</span> beta
+    y <span style="color:#f92672">=</span> Y_bar <span style="color:#f92672">+</span> b<span style="color:#f92672">*</span>beta
+
+    <span style="color:#75715e"># Step 9 calculate x_bar and u</span>
+    x_bar <span style="color:#f92672">=</span> sum(W<span style="color:#f92672">*</span>x)<span style="color:#f92672">/</span> sum(W)
+    y_bar <span style="color:#f92672">=</span> sum(W<span style="color:#f92672">*</span>y)<span style="color:#f92672">/</span> sum(W)
+    u <span style="color:#f92672">=</span> x <span style="color:#f92672">-</span> x_bar
+    v <span style="color:#f92672">=</span> y <span style="color:#f92672">-</span> y_bar
+    
+
+    <span style="color:#75715e"># Step 10 calculate sigma a and sigma b</span>
+    sigma_b <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">/</span>(sum(W<span style="color:#f92672">*</span>u<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>))
+<span style="color:#75715e">#     print(W, u, u**2, sep=&#39;\n&#39;)</span>
+    sigma_a <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">/</span>sum(W) <span style="color:#f92672">+</span> x_bar<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> sigma_b
+
+
+    <span style="color:#75715e"># Step 11 calculate goodness of fit</span>
+    <span style="color:#75715e"># S = sum(w_Xu**2)</span>
+    S <span style="color:#f92672">=</span> sum(W <span style="color:#f92672">*</span>(Y<span style="color:#f92672">-</span>b<span style="color:#f92672">*</span>X<span style="color:#f92672">-</span>a)<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>)
+    <span style="color:#75715e"># S = sum(u**2 / )</span>
+    deg_f <span style="color:#f92672">=</span> len(X) <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>
+    MSWD <span style="color:#f92672">=</span> S<span style="color:#f92672">/</span>deg_f
+    <span style="color:#66d9ef">return</span> Yorkfit(a, b, sigma_a<span style="color:#f92672">**</span><span style="color:#ae81ff">0.5</span>, sigma_b<span style="color:#f92672">**</span><span style="color:#ae81ff">0.5</span>, MSWD, deg_f, x, y)
+</code></pre></div><h2 id="decay-model-parameters">Decay model parameters</h2>
+<p>Decay constants in y<sup>-1</sup> from Steiger and Jäger (1977)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">lambda_232_Th <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.049475e-9</span>
+lambda_238_1 <span style="color:#f92672">=</span>  <span style="color:#ae81ff">0.155125e-9</span>
+lambda_235_2 <span style="color:#f92672">=</span>  <span style="color:#ae81ff">0.98485e-9</span>
+</code></pre></div><p>Initial composition for common lead (Tatsumoto 1973)</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Pb206Pb204_CD <span style="color:#f92672">=</span> <span style="color:#ae81ff">9.307</span>
+Pb207Pb204_CD <span style="color:#f92672">=</span> <span style="color:#ae81ff">10.294</span>
+Pb208Pb204_CD <span style="color:#f92672">=</span> <span style="color:#ae81ff">29.476</span>
+</code></pre></div><h2 id="decay-models-for-lead-evolution">Decay models for lead evolution</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Pb207206star <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> t: <span style="color:#ae81ff">1</span><span style="color:#f92672">/</span><span style="color:#ae81ff">137.88</span> <span style="color:#f92672">*</span> (np<span style="color:#f92672">.</span>exp(lambda_235_2<span style="color:#f92672">*</span>t)<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)<span style="color:#f92672">/</span>(np<span style="color:#f92672">.</span>exp(lambda_238_1<span style="color:#f92672">*</span>t)<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</code></pre></div><p>Stacey and Kramers (1975) two stage lead evolution</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Pb206Pb204_SK_2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> t: <span style="color:#ae81ff">11.152</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">9.735</span> <span style="color:#f92672">*</span>(np<span style="color:#f92672">.</span>exp(lambda_238_1<span style="color:#f92672">*</span><span style="color:#ae81ff">3.7e9</span>)<span style="color:#f92672">-</span>np<span style="color:#f92672">.</span>exp(lambda_238_1<span style="color:#f92672">*</span>t))
+Pb207Pb204_SK_2 <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> t: <span style="color:#ae81ff">12.998</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">9.735</span><span style="color:#f92672">/</span><span style="color:#ae81ff">137.88</span> <span style="color:#f92672">*</span> (np<span style="color:#f92672">.</span>exp(lambda_235_2<span style="color:#f92672">*</span><span style="color:#ae81ff">3.7e9</span>)<span style="color:#f92672">-</span>np<span style="color:#f92672">.</span>exp(lambda_235_2<span style="color:#f92672">*</span>t))
+
+Pb206Pb204_SK_mu <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> mu:(<span style="color:#66d9ef">lambda</span> t: <span style="color:#ae81ff">11.152</span> <span style="color:#f92672">+</span> mu <span style="color:#f92672">*</span>(np<span style="color:#f92672">.</span>exp(lambda_238_1<span style="color:#f92672">*</span><span style="color:#ae81ff">3.7e9</span>)<span style="color:#f92672">-</span>np<span style="color:#f92672">.</span>exp(lambda_238_1<span style="color:#f92672">*</span>t)))
+Pb207Pb204_SK_mu <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> mu:(<span style="color:#66d9ef">lambda</span> t: <span style="color:#ae81ff">12.998</span> <span style="color:#f92672">+</span> mu<span style="color:#f92672">/</span><span style="color:#ae81ff">137.88</span> <span style="color:#f92672">*</span> (np<span style="color:#f92672">.</span>exp(lambda_235_2<span style="color:#f92672">*</span><span style="color:#ae81ff">3.7e9</span>)<span style="color:#f92672">-</span>np<span style="color:#f92672">.</span>exp(lambda_235_2<span style="color:#f92672">*</span>t)))
+
+
+Pb206Pb204_1s <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> mu:(<span style="color:#66d9ef">lambda</span> t: Pb206Pb204_CD <span style="color:#f92672">+</span> mu <span style="color:#f92672">*</span>(np<span style="color:#f92672">.</span>exp(lambda_238_1<span style="color:#f92672">*</span><span style="color:#ae81ff">4.57e9</span>)<span style="color:#f92672">-</span>np<span style="color:#f92672">.</span>exp(lambda_238_1<span style="color:#f92672">*</span>t)))
+Pb207Pb204_1s <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> mu:(<span style="color:#66d9ef">lambda</span> t: Pb207Pb204_CD <span style="color:#f92672">+</span> mu<span style="color:#f92672">/</span><span style="color:#ae81ff">137.88</span> <span style="color:#f92672">*</span> (np<span style="color:#f92672">.</span>exp(lambda_235_2<span style="color:#f92672">*</span><span style="color:#ae81ff">4.57e9</span>)<span style="color:#f92672">-</span>np<span style="color:#f92672">.</span>exp(lambda_235_2<span style="color:#f92672">*</span>t)))
+
+</code></pre></div><h2 id="example">Example</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(dpi<span style="color:#f92672">=</span><span style="color:#ae81ff">150</span>)
+ax<span style="color:#f92672">.</span>set_aspect(<span style="color:#e6db74">&#39;equal&#39;</span>)
+
+rng <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>RandomState(<span style="color:#ae81ff">938262</span>)
+X <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([i<span style="color:#f92672">/</span><span style="color:#ae81ff">10</span> <span style="color:#f92672">+</span> (rng<span style="color:#f92672">.</span>rand()<span style="color:#f92672">-</span><span style="color:#ae81ff">0.5</span>)<span style="color:#f92672">/</span><span style="color:#ae81ff">10</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>)])
+Y <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([i<span style="color:#f92672">/</span><span style="color:#ae81ff">10</span><span style="color:#f92672">+</span>(rng<span style="color:#f92672">.</span>rand()<span style="color:#f92672">-</span><span style="color:#ae81ff">0.5</span>)<span style="color:#f92672">/</span><span style="color:#ae81ff">10</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>)])
+X_err <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">0.01</span><span style="color:#f92672">+</span>rng<span style="color:#f92672">.</span>rand()<span style="color:#f92672">/</span><span style="color:#ae81ff">50</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>)])
+Y_err <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">0.01</span><span style="color:#f92672">+</span>rng<span style="color:#f92672">.</span>rand()<span style="color:#f92672">/</span><span style="color:#ae81ff">50</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>)])
+Rho <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">0.7</span><span style="color:#f92672">*</span>rng<span style="color:#f92672">.</span>rand() <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.2</span> <span style="color:#66d9ef">for</span> _ <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">10</span>)])
+
+<span style="color:#66d9ef">for</span> PT <span style="color:#f92672">in</span> zip(X, Y, X_err, Y_err, Rho):
+    e_coords <span style="color:#f92672">=</span> error_ellipse(<span style="color:#f92672">*</span>PT)
+    e <span style="color:#f92672">=</span> mpl<span style="color:#f92672">.</span>patches<span style="color:#f92672">.</span>Polygon(e_coords, fc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, ec<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;k&#39;</span>, lw<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>, joinstyle<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;round&#39;</span>)
+    ax<span style="color:#f92672">.</span>add_patch(e)
+
+fit <span style="color:#f92672">=</span> york( X, Y, X_err, Y_err, Rho)
+<span style="color:#66d9ef">print</span>(<span style="color:#e6db74">&#34;Intercept: {} ± {}&#34;</span><span style="color:#f92672">.</span>format(fit<span style="color:#f92672">.</span>y0, fit<span style="color:#f92672">.</span>y0_err),
+      <span style="color:#e6db74">&#34;Slope: {} ± {}&#34;</span><span style="color:#f92672">.</span>format(fit<span style="color:#f92672">.</span>alpha, fit<span style="color:#f92672">.</span>alpha_err),
+      <span style="color:#e6db74">&#34;MSWD: {}&#34;</span><span style="color:#f92672">.</span>format(fit<span style="color:#f92672">.</span>MSWD),
+      sep<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#39;</span>,
+)
+ax<span style="color:#f92672">.</span>plot([<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>],[<span style="color:#ae81ff">0</span>,fit<span style="color:#f92672">.</span>alpha]);
+<span style="color:#75715e"># plt.savefig(&#39;output_12_0.png&#39;);</span>
+</code></pre></div><pre><code>Intercept: -0.004427323544156314 ± 0.011174410169326278
+Slope: 1.0149716953160086 ± 0.02263602489255625
+MSWD: 2.905814608188555
+</code></pre>
+<p><img src="output_13_1.png" alt="png"></p>
+<h2 id="references">References</h2>
+<hb>
+<p>Ludwig, K. R. (2003). User&rsquo;s manual for IsoPlot 3.0. A geochronological toolkit for Microsoft Excel, 71.</p>
+<p>Stacey, J.S., Kramers, J.D. (1975) Approximation of terrestrial lead isotope evolution by a two-stage model. Earth and Planetary Science Letters 26, 207-221.</p>
+<p>Steiger, R.H. and Jäger, E. (1977) Subcommission on Geochronology: Convention on the use of decay constants in geo- and cosmochronology. Earth and Planetary Science Letters 36, 359-362.</p>
+<p>Tatsumoto, M., Knight R.J., Allègre, C.J. (1973) Time differences in the formation of meteorites as determined from the ratio of lead-207 to lead-206. Science 180, 1279-1283.</p>
+<p>York, D. (1966) Least squares fitting of a straight line. Canadian Journal of Physics, 44, 1079–1086.</p>
+<p>York, D. (1969) Least squares fitting of a straight line with correlated errors. Earth and Planetary Science Letters 5, 320–324.</p>
+<p>York, D., Evensen, N.M., Martinez, M.L., and Delgado, J.D. (2004) Unified equations for the slope, intercept, and standard errors of the best straight line. American Journal of Physics 72, 367–375.</p>
+    <hr>
+<div class="navbar-nav flex-row flex-wrap justify-content-center">
+
+
+    <a class="nav-item nav-link" href=http://tarting.github.io/repository/isochron/> Project </a>
+
+
+    <span class="nav-item navbar-text mx-1">/</span>
+    <a class="nav-item nav-link" href=http://tarting.github.io/repository/isochron/errorelipses/> Next</a>
+
+</div>
+</div>
+
+        </div><div id="footer" class="mb-5">
+    <hr>
+    <div class="container text-center">
+        
+            <a href="https://www.researchgate.net/profile/Trygvi-Arting" class="fab fa-researchgate fa-1x" title="Research Gate"></a>
+        
+            <a href="https://github.com/tarting" class="fab fa-github fa-1x" title="GitHub"></a>
+        
+            <a href="https://facebook.com/trygvi" class="fab fa-facebook fa-1x" title="Facebook"></a>
+        
+            <a href="mailto:trygvi@gmail.com" class="fas fa-envelope fa-1x" title="E-mail"></a>
+        
+    </div>
+    
+        <div class="container text-center">
+            <a href="https://tarting.xyz" title="Trygvi Bech Árting"><small>Trygvi Bech Árting</small></a>
+        </div>
+    
+</div>
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang=""><head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Error ellipses</title>
+    <meta name="description" content="Geologist.Researcher.Developer">
+    <meta name="author" content='Trygvi Bech Árting'>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous">
+
+    
+    <link rel="stylesheet" href="/sass/researcher.min.css">
+
+    
+        <link rel="icon" type="image/ico" href="http://tarting.github.io/favicon.ico">
+    
+
+    
+        
+    
+    
+
+</head>
+
+    <body><div class="container mt-5">
+    <nav class="navbar navbar-expand-sm flex-column flex-sm-row text-nowrap p-0">
+        <a class="navbar-brand mx-0 mr-sm-auto" href="http://tarting.github.io/" title="Trygvi Bech Árting">
+          
+          Trygvi Bech Árting
+        </a>
+        <div class="navbar-nav flex-row flex-wrap justify-content-center">
+            
+                
+                
+                    <a class="nav-item nav-link" href="/resume" title="Resume">
+                        Resume
+                    </a>
+                    
+                        <span class="nav-item navbar-text mx-1">/</span>
+                    
+                
+                    <a class="nav-item nav-link" href="/research" title="Research">
+                        Research
+                    </a>
+                    
+                        <span class="nav-item navbar-text mx-1">/</span>
+                    
+                
+                    <a class="nav-item nav-link" href="/repository" title="Repo">
+                        Repo
+                    </a>
+                    
+                        <span class="nav-item navbar-text mx-1">/</span>
+                    
+                
+                    <a class="nav-item nav-link" href="/reachme" title="Reach me">
+                        Reach me
+                    </a>
+                    
+                
+            
+        </div>
+    </nav>
+</div>
+<hr>
+<div id="content">
+<div class="container">
+<div class="navbar-nav flex-row flex-wrap justify-content-center">
+
+    <a class="nav-item nav-link" href=http://tarting.github.io/repository/isochron/yorkfit/>Previous </a>
+    <span class="nav-item navbar-text mx-1">/</span>
+
+
+    <a class="nav-item nav-link" href=http://tarting.github.io/repository/isochron/> Project </a>
+
+
+</div>
+<H1> Error ellipses </H1>
+    
+        <figure class="avatar">
+            <img src="img.jpg"/>
+        </figure>
+    
+    <p>In order to graphically convey error corellation in the isotope data, error ellipses must be constructed from measured coordinates in isotope ratio space, the measurement error on each isotope ratio, and the associated error corellation.
+This code calculates the proper coordinates for the error ellipse (default 95% confidence interval).
+In addition, there is a function to calculate the &lsquo;best fit&rsquo; distance to a fitted isochron, to evaluate the misfit of each data point.</p>
+<p>Get coordinates for error ellipses, based on coordinates
+x-error, y-error (1 sigma) and error correllation, and scaling
+factor (defaults to 95% confidence).</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">%</span>matplotlib inline
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
+<span style="color:#f92672">import</span> math
+<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
+<span style="color:#f92672">import</span> matplotlib <span style="color:#f92672">as</span> mpl
+</code></pre></div><p>Calculate major and minor axes and inclination of ellipse.
+returns x_size, y_size, theta.</p>
+<p>w</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calc_ellipse_params</span>(x_err, y_err, rho, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">2.4477</span>):
+    xy_err <span style="color:#f92672">=</span> rho <span style="color:#f92672">*</span> x_err <span style="color:#f92672">*</span> y_err
+    covmat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>matrix([[x_err<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>,xy_err],
+                        [xy_err, y_err<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>]])
+
+    eig <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>eigvals(covmat)
+
+    theta  <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span><span style="color:#f92672">/</span><span style="color:#ae81ff">2</span> <span style="color:#f92672">*</span> math<span style="color:#f92672">.</span>atan((<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>xy_err)<span style="color:#f92672">/</span>(x_err<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span><span style="color:#f92672">-</span>y_err<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>))
+    x_size <span style="color:#f92672">=</span> eig[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">**</span><span style="color:#ae81ff">0.5</span> <span style="color:#f92672">*</span> scale
+    y_size <span style="color:#f92672">=</span> eig[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">**</span><span style="color:#ae81ff">0.5</span> <span style="color:#f92672">*</span> scale
+    <span style="color:#66d9ef">if</span> x_err <span style="color:#f92672">&gt;=</span> y_err:
+        theta <span style="color:#f92672">=</span> <span style="color:#f92672">-</span>theta
+        
+    <span style="color:#66d9ef">return</span> (x_size, y_size, theta)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">ellipse_formula</span>(x,y,a,b,theta):
+    x_t <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> t: x <span style="color:#f92672">+</span> a<span style="color:#f92672">*</span>math<span style="color:#f92672">.</span>cos(t)<span style="color:#f92672">*</span>math<span style="color:#f92672">.</span>cos(theta) <span style="color:#f92672">-</span> b<span style="color:#f92672">*</span>math<span style="color:#f92672">.</span>sin(t)<span style="color:#f92672">*</span>math<span style="color:#f92672">.</span>sin(theta)
+    y_t <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> t: y <span style="color:#f92672">+</span> b<span style="color:#f92672">*</span>math<span style="color:#f92672">.</span>sin(t)<span style="color:#f92672">*</span>math<span style="color:#f92672">.</span>cos(theta) <span style="color:#f92672">-</span> a<span style="color:#f92672">*</span>math<span style="color:#f92672">.</span>cos(t)<span style="color:#f92672">*</span>math<span style="color:#f92672">.</span>sin(theta)
+    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">lambda</span> t:[x_t(t), y_t(t)]
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">ellipse</span>(x,y,a,b,theta, num_pts<span style="color:#f92672">=</span><span style="color:#ae81ff">200</span>):
+    form <span style="color:#f92672">=</span> ellipse_formula(x,y,a,b,theta)
+    <span style="color:#66d9ef">return</span> np<span style="color:#f92672">.</span>array([form(t) <span style="color:#66d9ef">for</span> t <span style="color:#f92672">in</span> np<span style="color:#f92672">.</span>linspace(<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>math<span style="color:#f92672">.</span>pi<span style="color:#f92672">-</span> <span style="color:#ae81ff">2</span><span style="color:#f92672">*</span>math<span style="color:#f92672">.</span>pi<span style="color:#f92672">/</span>num_pts, num<span style="color:#f92672">=</span>num_pts)])
+</code></pre></div><p>Ellipse formula generator, similar to error ellipse, but returns a function taking an angle
+(positive rotation direction) in degrees and returns the edge coordinate in that direction.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">error_ellipse_formula</span>(x, y, x_err, y_err, rho, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">2.4477</span>):
+    x_size, y_size, theta <span style="color:#f92672">=</span> calc_ellipse_params(x_err, y_err, rho, scale)
+
+    <span style="color:#66d9ef">return</span> ellipse_formula(x,y,x_size,y_size,theta)
+</code></pre></div><p>Takes data coordinates, 1 sigma errors, error correllation factor, scale
+(95% conf default (2.4477), and number of edge points).
+returns a coordinate matrix for for the error ellipse edges for each datapoint,
+in data coordinates.
+This can be used for creating matplotlib patches.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">error_ellipse</span>(x, y, x_err, y_err, rho, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">2.4477</span>, num_points <span style="color:#f92672">=</span> <span style="color:#ae81ff">200</span>):
+    x_size, y_size, theta <span style="color:#f92672">=</span> calc_ellipse_params(x_err, y_err, rho, scale)
+    
+    <span style="color:#66d9ef">return</span> ellipse(x,y,x_size,y_size,theta,num_points)
+</code></pre></div><p>Example of plotting a data set:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(dpi<span style="color:#f92672">=</span><span style="color:#ae81ff">150</span>)
+rng <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>RandomState(<span style="color:#ae81ff">1129412</span>)
+<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">10</span>):
+    x, y <span style="color:#f92672">=</span> i<span style="color:#f92672">/</span><span style="color:#ae81ff">10</span> <span style="color:#f92672">+</span> (rng<span style="color:#f92672">.</span>rand()<span style="color:#f92672">-</span><span style="color:#ae81ff">0.5</span>)<span style="color:#f92672">/</span><span style="color:#ae81ff">10</span>, i<span style="color:#f92672">/</span><span style="color:#ae81ff">10</span><span style="color:#f92672">+</span>(rng<span style="color:#f92672">.</span>rand()<span style="color:#f92672">-</span><span style="color:#ae81ff">0.5</span>)<span style="color:#f92672">/</span><span style="color:#ae81ff">10</span>
+    x_err, y_err <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.01</span><span style="color:#f92672">+</span>rng<span style="color:#f92672">.</span>rand()<span style="color:#f92672">/</span><span style="color:#ae81ff">50</span>, <span style="color:#ae81ff">0.01</span><span style="color:#f92672">+</span>rng<span style="color:#f92672">.</span>rand()<span style="color:#f92672">/</span><span style="color:#ae81ff">50</span>
+    rho <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.7</span><span style="color:#f92672">*</span>rng<span style="color:#f92672">.</span>rand() <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.2</span>
+    e_coords <span style="color:#f92672">=</span> error_ellipse(x, y, x_err, y_err, rho)
+    e <span style="color:#f92672">=</span> mpl<span style="color:#f92672">.</span>patches<span style="color:#f92672">.</span>Polygon(e_coords, fc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, ec<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;k&#39;</span>, lw<span style="color:#f92672">=</span><span style="color:#ae81ff">0.5</span>, joinstyle<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;round&#39;</span>)
+    ax<span style="color:#f92672">.</span>add_patch(e)
+ax<span style="color:#f92672">.</span>set_aspect(<span style="color:#e6db74">&#39;equal&#39;</span>)
+plt<span style="color:#f92672">.</span>savefig(<span style="color:#e6db74">&#39;output_12_0.png&#39;</span>);
+</code></pre></div><p><img src="output_12_0.png" alt="png"></p>
+<p>In order to evaluate a regression fit, we calculate the &lsquo;best fit&rsquo; distance, defined as the shortest distance from an analysis point, in relation to the error ellipse size. This corresponds to the distance between the ellipse center and the first point on the line the ellipse touches under scaling.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(dpi<span style="color:#f92672">=</span><span style="color:#ae81ff">150</span>)
+pts <span style="color:#f92672">=</span> [
+    <span style="color:#75715e">#x,   y,   x_err, y_err,  rho, scale</span>
+    [<span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.3</span>,  <span style="color:#ae81ff">0.04</span>,  <span style="color:#ae81ff">0.06</span>, <span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.5</span>],
+    [<span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.3</span>,  <span style="color:#ae81ff">0.04</span>,  <span style="color:#ae81ff">0.06</span>, <span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">1.8</span>],
+    [<span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.3</span>,  <span style="color:#ae81ff">0.04</span>,  <span style="color:#ae81ff">0.06</span>, <span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">3.6</span>],
+    [<span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">0.3</span>,  <span style="color:#ae81ff">0.04</span>,  <span style="color:#ae81ff">0.06</span>, <span style="color:#ae81ff">0.5</span>, <span style="color:#ae81ff">6</span>],
+    
+]
+<span style="color:#66d9ef">for</span> pt <span style="color:#f92672">in</span> pts:
+    e_coords <span style="color:#f92672">=</span> error_ellipse(<span style="color:#f92672">*</span>pt)
+    e <span style="color:#f92672">=</span> mpl<span style="color:#f92672">.</span>patches<span style="color:#f92672">.</span>Polygon(e_coords, joinstyle<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;round&#39;</span>, ls<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;:&#39;</span>, fc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, ec<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;C3&#39;</span>, lw<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
+    ax<span style="color:#f92672">.</span>add_patch(e)
+
+ax<span style="color:#f92672">.</span>plot([<span style="color:#ae81ff">0.1</span>,<span style="color:#ae81ff">0.9</span>], [<span style="color:#ae81ff">0.2</span>, <span style="color:#ae81ff">0.7</span>]);
+ax<span style="color:#f92672">.</span>annotate(<span style="color:#e6db74">&#39;&#39;</span>, xy<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0.5</span>,<span style="color:#ae81ff">0.3</span>), xytext<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0.59</span>,<span style="color:#ae81ff">0.51</span>), xycoords<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;data&#39;</span>, arrowprops<span style="color:#f92672">=</span>{<span style="color:#e6db74">&#39;arrowstyle&#39;</span>: <span style="color:#e6db74">&#39;|-|&#39;</span>})
+ax<span style="color:#f92672">.</span>annotate(<span style="color:#e6db74">&#39;Best fit</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">distance&#39;</span>, xy<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0.56</span>,<span style="color:#ae81ff">0.3</span>), xycoords<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;data&#39;</span>, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>)
+ax<span style="color:#f92672">.</span>annotate(<span style="color:#e6db74">&#39;Regression line&#39;</span>, xy<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0.17</span>,<span style="color:#ae81ff">0.3</span>), c<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;k&#39;</span>, xycoords<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;data&#39;</span>, rotation <span style="color:#f92672">=</span><span style="color:#ae81ff">31</span>, fontsize<span style="color:#f92672">=</span><span style="color:#ae81ff">12</span>);
+ax<span style="color:#f92672">.</span>set_aspect(<span style="color:#e6db74">&#39;equal&#39;</span>)
+plt<span style="color:#f92672">.</span>savefig(<span style="color:#e6db74">&#39;output_14_0.png&#39;</span>);
+</code></pre></div><p><img src="output_14_0.png" alt="png"></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_bestfitdist</span>(x, y, x_err, y_err, rho, fit):
+    
+    shift_vec <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>matrix([[<span style="color:#ae81ff">0</span>,fit<span style="color:#f92672">.</span>y0]])
+    l0 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>matrix([[<span style="color:#ae81ff">1</span>,fit<span style="color:#f92672">.</span>alpha]])
+    
+    coords <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array([[x,y]]) <span style="color:#f92672">-</span> shift_vec
+
+    a, b, theta <span style="color:#f92672">=</span> calc_ellipse_params(
+        x_err, y_err, rho)
+    
+    ellipse_form <span style="color:#f92672">=</span> ellipse_formula(
+        x,y,a,b,theta)
+    
+    scale_mx_1 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>matrix([[<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>],[<span style="color:#ae81ff">0</span>,b<span style="color:#f92672">/</span>a]])
+    scale_mx_2 <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>matrix([[<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>],[<span style="color:#ae81ff">0</span>,a<span style="color:#f92672">/</span>b]])
+
+    rot_mx <span style="color:#f92672">=</span> <span style="color:#66d9ef">lambda</span> t: np<span style="color:#f92672">.</span>matrix([[np<span style="color:#f92672">.</span>cos(t), <span style="color:#f92672">-</span> np<span style="color:#f92672">.</span>sin(t)],
+                                  [np<span style="color:#f92672">.</span>sin(t), np<span style="color:#f92672">.</span>cos(t)]])
+    
+    c_pp <span style="color:#f92672">=</span> (coords<span style="color:#960050;background-color:#1e0010">@</span> rot_mx(theta) <span style="color:#a6e22e">@scale_mx_1</span>)<span style="color:#f92672">.</span>T
+    l0_pp <span style="color:#f92672">=</span>  (l0<span style="color:#960050;background-color:#1e0010">@</span> rot_mx(theta) <span style="color:#a6e22e">@scale_mx_1</span>)<span style="color:#f92672">.</span>T
+    l0_alpha <span style="color:#f92672">=</span> l0_pp[<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>]<span style="color:#f92672">/</span>l0_pp[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>]
+    n_pp <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>matrix([[<span style="color:#f92672">-</span>l0_pp[<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>],l0_pp[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>]]])<span style="color:#f92672">.</span>T
+    n_alpha <span style="color:#f92672">=</span> n_pp[<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>]<span style="color:#f92672">/</span>n_pp[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>]
+    n_0 <span style="color:#f92672">=</span> c_pp[<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>] <span style="color:#f92672">-</span> c_pp[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>]<span style="color:#f92672">*</span>n_alpha
+    
+    x_intercept <span style="color:#f92672">=</span> n_0 <span style="color:#f92672">/</span> (l0_alpha<span style="color:#f92672">-</span>n_alpha)
+    c_adj_pp <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>matrix([[x_intercept,l0_alpha<span style="color:#f92672">*</span>x_intercept]])
+    
+    n <span style="color:#f92672">=</span> ((n_pp<span style="color:#f92672">.</span>T <span style="color:#f92672">*</span> scale_mx_2) <span style="color:#f92672">*</span> rot_mx(<span style="color:#f92672">-</span>theta)) <span style="color:#f92672">+</span> shift_vec
+    n <span style="color:#f92672">=</span> n<span style="color:#f92672">/</span>np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>norm(n)
+    c <span style="color:#f92672">=</span> ((c_pp<span style="color:#f92672">.</span>T <span style="color:#f92672">*</span> scale_mx_2) <span style="color:#f92672">*</span> rot_mx(<span style="color:#f92672">-</span>theta)) <span style="color:#f92672">+</span> shift_vec
+    c_adj <span style="color:#f92672">=</span> ((c_adj_pp <span style="color:#f92672">*</span> scale_mx_2) <span style="color:#f92672">*</span> rot_mx(<span style="color:#f92672">-</span>theta)) <span style="color:#f92672">+</span> shift_vec
+    theta_n <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arccos(n[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>])
+    ell_coords <span style="color:#f92672">=</span> ellipse_form(theta_n)
+    dir_95_conf <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>norm(np<span style="color:#f92672">.</span>array(c)[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">-</span> np<span style="color:#f92672">.</span>array(ell_coords)) 
+    misfit <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>linalg<span style="color:#f92672">.</span>norm(c<span style="color:#f92672">-</span>c_adj) <span style="color:#f92672">*</span> (<span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> c[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>] <span style="color:#f92672">&gt;=</span> c_adj[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">else</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>) 
+    <span style="color:#66d9ef">return</span> (c_adj, misfit, n, theta_n, dir_95_conf)
+</code></pre></div>
+    <hr>
+<div class="navbar-nav flex-row flex-wrap justify-content-center">
+
+    <a class="nav-item nav-link" href=http://tarting.github.io/repository/isochron/yorkfit/>Previous </a>
+    <span class="nav-item navbar-text mx-1">/</span>
+
+
+    <a class="nav-item nav-link" href=http://tarting.github.io/repository/isochron/> Project </a>
+
+
+</div>
+</div>
+
+        </div><div id="footer" class="mb-5">
+    <hr>
+    <div class="container text-center">
+        
+            <a href="https://www.researchgate.net/profile/Trygvi-Arting" class="fab fa-researchgate fa-1x" title="Research Gate"></a>
+        
+            <a href="https://github.com/tarting" class="fab fa-github fa-1x" title="GitHub"></a>
+        
+            <a href="https://facebook.com/trygvi" class="fab fa-facebook fa-1x" title="Facebook"></a>
+        
+            <a href="mailto:trygvi@gmail.com" class="fas fa-envelope fa-1x" title="E-mail"></a>
+        
+    </div>
+    
+        <div class="container text-center">
+            <a href="https://tarting.xyz" title="Trygvi Bech Árting"><small>Trygvi Bech Árting</small></a>
+        </div>
+    
+</div>
+</body>
+</html>
