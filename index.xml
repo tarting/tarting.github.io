@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>T. B. Árting: Resume on Trygvi Bech Árting</title>
+    <title>Resume on Trygvi Bech Árting</title>
     <link>http://tarting.github.io/</link>
-    <description>Recent content in T. B. Árting: Resume on Trygvi Bech Árting</description>
+    <description>Recent content in Resume on Trygvi Bech Árting</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language><atom:link href="http://tarting.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
@@ -47,7 +47,7 @@ Here an example configuration file is presented with comments on each parameter.
     </item>
     
     <item>
-      <title>T. B. Árting: Reach Me</title>
+      <title>Reach me</title>
       <link>http://tarting.github.io/reachme/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -60,7 +60,7 @@ Facebook</description>
     </item>
     
     <item>
-      <title>T. B. Árting: Research</title>
+      <title>Research</title>
       <link>http://tarting.github.io/research/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
@@ -69,7 +69,7 @@ Facebook</description>
     </item>
     
     <item>
-      <title>T. B. Árting: Resume</title>
+      <title>Resume</title>
       <link>http://tarting.github.io/resume/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
