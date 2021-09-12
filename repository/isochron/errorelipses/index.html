@@ -21,17 +21,20 @@
     
         
     
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
     
+    <script src="/js/header.js"></script>
 
 </head>
 
-    <body><div class="container mt-5">
+    <body>
+        <header class="nav-down"><div class="container mt-5">
+    <nav class="navbar navbar-expand-sm flex-column flex-sm-row text-nowrap p-0">
         <a class="navbar-brand mx-0 mr-sm-auto" href="http://tarting.github.io/" title="Trygvi Bech Árting">
+          
           
           Trygvi Bech Árting
         </a>
-    <nav class="navbar navbar-expand-sm flex-column flex-sm-row text-nowrap p-0">
-        
         
         
         <div class="navbar-nav flex-row flex-wrap justify-content-center">
@@ -69,7 +72,8 @@
     </nav>
 </div>
 <hr>
-<div id="content">
+</header>
+        <div id="content">
 <div class="container">
 <div class="navbar-nav flex-row flex-wrap justify-content-center">
 
@@ -100,6 +104,7 @@ factor (defaults to 95% confidence).</p>
 <span style="color:#f92672">import</span> matplotlib <span style="color:#f92672">as</span> mpl
 </code></pre></div><p>Calculate major and minor axes and inclination of ellipse.
 returns x_size, y_size, theta.</p>
+<p>w</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calc_ellipse_params</span>(x_err, y_err, rho, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">2.4477</span>):
     xy_err <span style="color:#f92672">=</span> rho <span style="color:#f92672">*</span> x_err <span style="color:#f92672">*</span> y_err
     covmat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>matrix([[x_err<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>,xy_err],
