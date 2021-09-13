@@ -71,7 +71,6 @@
         </div>
     </nav>
 </div>
-<hr>
 </header>
         <div id="content">
 <div class="container">
@@ -104,7 +103,6 @@ factor (defaults to 95% confidence).</p>
 <span style="color:#f92672">import</span> matplotlib <span style="color:#f92672">as</span> mpl
 </code></pre></div><p>Calculate major and minor axes and inclination of ellipse.
 returns x_size, y_size, theta.</p>
-<p>w</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calc_ellipse_params</span>(x_err, y_err, rho, scale<span style="color:#f92672">=</span><span style="color:#ae81ff">2.4477</span>):
     xy_err <span style="color:#f92672">=</span> rho <span style="color:#f92672">*</span> x_err <span style="color:#f92672">*</span> y_err
     covmat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>matrix([[x_err<span style="color:#f92672">**</span><span style="color:#ae81ff">2</span>,xy_err],
@@ -141,7 +139,8 @@ This can be used for creating matplotlib patches.</p>
     x_size, y_size, theta <span style="color:#f92672">=</span> calc_ellipse_params(x_err, y_err, rho, scale)
     
     <span style="color:#66d9ef">return</span> ellipse(x,y,x_size,y_size,theta,num_points)
-</code></pre></div><p>Example of plotting a data set:</p>
+</code></pre></div><h1 id="example-use">Example use</h1>
+<hr>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(dpi<span style="color:#f92672">=</span><span style="color:#ae81ff">150</span>)
 rng <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>RandomState(<span style="color:#ae81ff">1129412</span>)
 <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">10</span>):
@@ -154,6 +153,8 @@ rng <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>r
 ax<span style="color:#f92672">.</span>set_aspect(<span style="color:#e6db74">&#39;equal&#39;</span>)
 plt<span style="color:#f92672">.</span>savefig(<span style="color:#e6db74">&#39;output_12_0.png&#39;</span>);
 </code></pre></div><p><img src="output_12_0.png" alt="png"></p>
+<h1 id="measuiring-misfit">Measuiring misfit</h1>
+<hr>
 <p>In order to evaluate a regression fit, we calculate the &lsquo;best fit&rsquo; distance, defined as the shortest distance from an analysis point, in relation to the error ellipse size. This corresponds to the distance between the ellipse center and the first point on the line the ellipse touches under scaling.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(dpi<span style="color:#f92672">=</span><span style="color:#ae81ff">150</span>)
 pts <span style="color:#f92672">=</span> [

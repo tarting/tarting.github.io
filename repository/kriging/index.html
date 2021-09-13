@@ -71,7 +71,6 @@
         </div>
     </nav>
 </div>
-<hr>
 </header>
         <div id="content">
 <div class="container">
@@ -83,7 +82,8 @@
     
     <p>An example of kriging and map projection in Python 3. Geopandas is used for reading and plotting data from shapefiles; pyproj for projecting data from geographic coortinates to UTM coordinates; the kriging solution from osgeo, gstools is used to fit the data, and generate conditioned fields; shapely is used to generate geometries; scipy.ndimage is used for vector-raster arithmetic; numpy for array manipulations; and matplotlib for ploting maps.</p>
 <p><a href="/repository/kriging/#imports">Imports are at the bottom of the page</a></p>
-<h3 id="map-setup">Map setup</h3>
+<h1 id="map-setup">Map setup</h1>
+<hr>
 <p>Define projections: EPSG:4326 is the geographical reference (WGS-84), and the map is plotted in UTM zone 32N (EPSG:32632).</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">epsg_geog <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;EPSG:4326&#39;</span>
 epsg_plot <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;EPSG:32632&#39;</span>
@@ -112,7 +112,8 @@ sea_gdf <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</s
 plot_basemap(ax, np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">7</span>,<span style="color:#ae81ff">14</span>]),np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">53</span>,<span style="color:#ae81ff">59</span>]))
 grid_bounds_gdf<span style="color:#f92672">.</span>plot(fc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, ec<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;r&#39;</span>, ax<span style="color:#f92672">=</span>ax, zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">13</span>)
 </code></pre></div><p><img src="output_6_1.png" alt="png"></p>
-<h3 id="generate-example-conditioned-field">Generate example conditioned field</h3>
+<h1 id="generate-example-conditioned-field">Generate example conditioned field</h1>
+<hr>
 <p>We generate a conditional field using a gaussian kernel with a functional range of 30 km, semivariance of 1, and a regional linear drift. The drift is added to the value as a multiple of the latitude and longitude.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># structured field with a size 100x100 and a grid-size of 1x1</span>
 seed <span style="color:#f92672">=</span> <span style="color:#ae81ff">1259</span>
@@ -165,7 +166,8 @@ plot_basemap(ax, lon, lat)
 pts_gdf<span style="color:#f92672">.</span>plot(marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;.&#39;</span>, edgecolor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;k&#39;</span>, facecolor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, ax<span style="color:#f92672">=</span>ax);
 <span style="color:#66d9ef">print</span>(len(pts_gdf))
 </code></pre></div><p><img src="output_15_1.png" alt="png"></p>
-<h3 id="time-to-krige">Time to Krige</h3>
+<h1 id="time-to-krige">Time to Krige</h1>
+<hr>
 <p>First we fit a the variogram. In this case we use the fitting routine built into the gstools module. We make sure to use spherical coordinates by setting <code>latlon = true</code>.
 The <code>rescale = gs.EARTH_RADIUS</code> parameter rescales great circle distances to kilometers rather than the default: radians.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">bins <span style="color:#f92672">=</span> gs<span style="color:#f92672">.</span>standard_bins(
@@ -208,7 +210,8 @@ uk <span style="color:#f92672">=</span> gs<span style="color:#f92672">.</span>kr
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Z_fit, Z_v <span style="color:#f92672">=</span> uk((lat, lon), mesh_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;structured&#34;</span>)
 Z_mean <span style="color:#f92672">=</span> uk((lat, lon), mesh_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;structured&#34;</span>, only_mean<span style="color:#f92672">=</span>True)
 Z_se <span style="color:#f92672">=</span> (Z_v<span style="color:#f92672">**</span><span style="color:#ae81ff">0.5</span>)
-</code></pre></div><h3 id="plot-maps">Plot maps</h3>
+</code></pre></div><h1 id="plot-maps">Plot maps</h1>
+<hr>
 <p>Before plotting we setup the projection: UTM zone 32N.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">T <span style="color:#f92672">=</span> ppr<span style="color:#f92672">.</span>proj<span style="color:#f92672">.</span>Transformer<span style="color:#f92672">.</span>from_crs(crs_from<span style="color:#f92672">=</span>epsg_geog, crs_to<span style="color:#f92672">=</span>epsg_plot)
 
@@ -251,7 +254,8 @@ ax<span style="color:#f92672">.</span>plot(pts_x, pts_y, <span style="color:#e6d
 plt<span style="color:#f92672">.</span>colorbar(cont, ax<span style="color:#f92672">=</span>ax)
 ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#39;Linear drift&#39;</span>);
 </code></pre></div><p><img src="output_29_1.png" alt="png"></p>
-<h3 id="plot-realisations-of-the-resulting-random-field">Plot realisations of the resulting random field</h3>
+<h1 id="plot-realisations-of-the-resulting-random-field">Plot realisations of the resulting random field</h1>
+<hr>
 <p>Following the same procedure as above we can plot realisations of the random field. First we generate conditioned surfaces using the universal kriging fit as the condition.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">realisations <span style="color:#f92672">=</span> []
 <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>):

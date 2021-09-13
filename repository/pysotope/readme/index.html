@@ -71,7 +71,6 @@
         </div>
     </nav>
 </div>
-<hr>
 </header>
         <div id="content">
 <div class="container">
@@ -93,8 +92,8 @@
     
     <p>Pysotope uses a hillclimbing algorithm to unmix spike and sample isotope composition, by calculating mass dependent instrument and natural isotope fractionation from a known standard. This yields sample isotope composition and concentration for the element of interest.</p>
 <p><a href="https://github.com/tarting/pysotope">github.com/tarting/pysotope</a></p>
-<h1 id="user-guide">User guide</h1>
-<h2 id="installing">Installing</h2>
+<h1 id="installing">Installing</h1>
+<hr>
 <p>Get a working installation of python e.g. via the Anaconda python distribution
 (Used for testing on Windows 10, macOS Mojave, and Manjaro GNU/Linux).</p>
 <p>Install the package by downloading/cloning this repository navigating to
@@ -114,7 +113,8 @@ exit the python shell.</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ pysotope --help
 </code></pre></div><p>Subcommands also yield help texts e.g.:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sh" data-lang="sh">$ pysotope init --help
-</code></pre></div><h2 id="using-the-command-line-tools">Using the command-line tools</h2>
+</code></pre></div><h1 id="using-the-command-line-tools">Using the command-line tools</h1>
+<hr>
 <p>These tools are specifically made for the instruments, naming-convention and
 workflow at the UCPH labs.</p>
 <p>Pysotope requires a specific directory structure, and works best if
@@ -165,7 +165,8 @@ for all runs. These are put as png files in a GFX folder. The summary
 diagrams display each run in separate colors, cycles excluded from mean
 calculation as red crosses, as well as 2 standard deviation and standard
 error fields, for both individual runs and summarized across a bead run.</p>
-<h2 id="using-as-a-python-module">Using as a python module</h2>
+<h1 id="using-as-a-python-module">Using as a python module</h1>
+<hr>
 <p>Import pysotope:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#f92672">import</span> pysotope <span style="color:#f92672">as</span> pst
 </code></pre></div><p>You still need to provide a specification file (described in previous

@@ -21,7 +21,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>http://tarting.github.io/repository/tarting.xyz/</guid>
-      <description>Source code for this website at github.com/tarting/tarting.xyz. The website was is generated using the hugo static website generator, heavily based on the researcher theme. Gallery functionality is provided by nanogallery2 following mertbakirs guide. Nanogallery2 and single image displays on the site depend on lightbox2.</description>
+      <description>Source code for this website is available at github.com/tarting/tarting.xyz. The website was is generated using the hugo static website generator, heavily based on the researcher theme. Gallery functionality is provided by nanogallery2 following mertbakirs guide. Nanogallery2 and single image displays on the site depend on lightbox2.</description>
     </item>
     
   </channel>
