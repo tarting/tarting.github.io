@@ -47,19 +47,6 @@ Here an example configuration file is presented with comments on each parameter.
     </item>
     
     <item>
-      <title>Reach me</title>
-      <link>http://tarting.github.io/reachme/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://tarting.github.io/reachme/</guid>
-      <description>Reach me at  e-mail: trygvi@gmail.com
-telephone: +45 5031 0807
-Social media  ResearchGate
-GitHub
-Facebook</description>
-    </item>
-    
-    <item>
       <title>Research</title>
       <link>http://tarting.github.io/research/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
