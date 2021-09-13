@@ -28,7 +28,7 @@
 </head>
 
     <body>
-        <header class="nav-down" style="z-index:1030;"><div class="container">
+        <header class="nav-down"><div class="container">
     <nav class="navbar navbar-expand-sm flex-column flex-sm-row text-nowrap p-0">
         <a class="navbar-brand mx-0 mr-sm-auto" href="http://tarting.github.io/" title="Trygvi Bech Árting">
           
@@ -117,229 +117,229 @@
 <h1 id="map-setup">Map setup</h1>
 <hr>
 <p>Define projections: EPSG:4326 is the geographical reference (WGS-84), and the map is plotted in UTM zone 32N (EPSG:32632).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">epsg_geog <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;EPSG:4326&#39;</span>
-epsg_plot <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;EPSG:32632&#39;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">epsg_geog <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;EPSG:4326&#39;</span>
+epsg_plot <span style="color:#ff79c6">=</span> <span style="color:#f1fa8c">&#39;EPSG:32632&#39;</span>
 </code></pre></div><p>Define map boundaries.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">bounds <span style="color:#f92672">=</span> Polygon(((<span style="color:#ae81ff">7</span>,<span style="color:#ae81ff">53</span>),(<span style="color:#ae81ff">7</span>,<span style="color:#ae81ff">59</span>),(<span style="color:#ae81ff">14</span>,<span style="color:#ae81ff">59</span>),(<span style="color:#ae81ff">14</span>,<span style="color:#ae81ff">53</span>)))
-bounds_gdf <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>GeoDataFrame(geometry<span style="color:#f92672">=</span>[bounds], crs<span style="color:#f92672">=</span>epsg_geog)
-grid_bounds <span style="color:#f92672">=</span> Polygon(((<span style="color:#ae81ff">7.9</span>,<span style="color:#ae81ff">54.5</span>),(<span style="color:#ae81ff">7.9</span>,<span style="color:#ae81ff">57.9</span>),(<span style="color:#ae81ff">13</span>,<span style="color:#ae81ff">57.9</span>),(<span style="color:#ae81ff">13</span>,<span style="color:#ae81ff">54.5</span>)))
-grid_bounds_gdf <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>GeoDataFrame(geometry<span style="color:#f92672">=</span>[grid_bounds], crs<span style="color:#f92672">=</span>epsg_geog)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">bounds <span style="color:#ff79c6">=</span> Polygon(((<span style="color:#bd93f9">7</span>,<span style="color:#bd93f9">53</span>),(<span style="color:#bd93f9">7</span>,<span style="color:#bd93f9">59</span>),(<span style="color:#bd93f9">14</span>,<span style="color:#bd93f9">59</span>),(<span style="color:#bd93f9">14</span>,<span style="color:#bd93f9">53</span>)))
+bounds_gdf <span style="color:#ff79c6">=</span> gpd<span style="color:#ff79c6">.</span>GeoDataFrame(geometry<span style="color:#ff79c6">=</span>[bounds], crs<span style="color:#ff79c6">=</span>epsg_geog)
+grid_bounds <span style="color:#ff79c6">=</span> Polygon(((<span style="color:#bd93f9">7.9</span>,<span style="color:#bd93f9">54.5</span>),(<span style="color:#bd93f9">7.9</span>,<span style="color:#bd93f9">57.9</span>),(<span style="color:#bd93f9">13</span>,<span style="color:#bd93f9">57.9</span>),(<span style="color:#bd93f9">13</span>,<span style="color:#bd93f9">54.5</span>)))
+grid_bounds_gdf <span style="color:#ff79c6">=</span> gpd<span style="color:#ff79c6">.</span>GeoDataFrame(geometry<span style="color:#ff79c6">=</span>[grid_bounds], crs<span style="color:#ff79c6">=</span>epsg_geog)
 
 </code></pre></div><p>Read basemap data and filter with map boundary.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">countries_gdf <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>read_file(<span style="color:#e6db74">&#39;../basemap/ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp&#39;</span>,
-                              mask<span style="color:#f92672">=</span>bounds_gdf)
-countries_gdf <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>clip(countries_gdf, bounds_gdf)
-AOI_gdf <span style="color:#f92672">=</span> countries_gdf[countries_gdf[<span style="color:#e6db74">&#39;ADMIN&#39;</span>] <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;Denmark&#39;</span>]
-neighbours_gdf <span style="color:#f92672">=</span> countries_gdf[countries_gdf[<span style="color:#e6db74">&#39;ADMIN&#39;</span>] <span style="color:#f92672">!=</span> <span style="color:#e6db74">&#39;Denmark&#39;</span>]
-sea_gdf <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>overlay(bounds_gdf, countries_gdf, how<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;difference&#39;</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">countries_gdf <span style="color:#ff79c6">=</span> gpd<span style="color:#ff79c6">.</span>read_file(<span style="color:#f1fa8c">&#39;../basemap/ne_10m_admin_0_countries/ne_10m_admin_0_countries.shp&#39;</span>,
+                              mask<span style="color:#ff79c6">=</span>bounds_gdf)
+countries_gdf <span style="color:#ff79c6">=</span> gpd<span style="color:#ff79c6">.</span>clip(countries_gdf, bounds_gdf)
+AOI_gdf <span style="color:#ff79c6">=</span> countries_gdf[countries_gdf[<span style="color:#f1fa8c">&#39;ADMIN&#39;</span>] <span style="color:#ff79c6">==</span> <span style="color:#f1fa8c">&#39;Denmark&#39;</span>]
+neighbours_gdf <span style="color:#ff79c6">=</span> countries_gdf[countries_gdf[<span style="color:#f1fa8c">&#39;ADMIN&#39;</span>] <span style="color:#ff79c6">!=</span> <span style="color:#f1fa8c">&#39;Denmark&#39;</span>]
+sea_gdf <span style="color:#ff79c6">=</span> gpd<span style="color:#ff79c6">.</span>overlay(bounds_gdf, countries_gdf, how<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;difference&#39;</span>)
 </code></pre></div><p>It&rsquo;s tedious to replot the basemap for each map. Therefore its encapsulated in a function.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">plot_basemap</span>(ax, x, y, crs<span style="color:#f92672">=</span>epsg_geog):
-    sea_gdf<span style="color:#f92672">.</span>to_crs(crs)<span style="color:#f92672">.</span>plot(fc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;aqua&#39;</span>, ec<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, ax<span style="color:#f92672">=</span>ax, zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-    neighbours_gdf<span style="color:#f92672">.</span>to_crs(crs)<span style="color:#f92672">.</span>plot(fc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;gray&#39;</span>, ec<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;k&#39;</span>, ax<span style="color:#f92672">=</span>ax, zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)
-    AOI_gdf<span style="color:#f92672">.</span>to_crs(crs)<span style="color:#f92672">.</span>plot(fc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, ec<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;k&#39;</span>, ax<span style="color:#f92672">=</span>ax, zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">5</span>)
-    ax<span style="color:#f92672">.</span>set_xlim(x<span style="color:#f92672">.</span>min(), x<span style="color:#f92672">.</span>max())
-    ax<span style="color:#f92672">.</span>set_ylim(y<span style="color:#f92672">.</span>min(), y<span style="color:#f92672">.</span>max())
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">plot_basemap</span>(ax, x, y, crs<span style="color:#ff79c6">=</span>epsg_geog):
+    sea_gdf<span style="color:#ff79c6">.</span>to_crs(crs)<span style="color:#ff79c6">.</span>plot(fc<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;aqua&#39;</span>, ec<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;none&#39;</span>, ax<span style="color:#ff79c6">=</span>ax, zorder<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>)
+    neighbours_gdf<span style="color:#ff79c6">.</span>to_crs(crs)<span style="color:#ff79c6">.</span>plot(fc<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;gray&#39;</span>, ec<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;k&#39;</span>, ax<span style="color:#ff79c6">=</span>ax, zorder<span style="color:#ff79c6">=</span><span style="color:#bd93f9">3</span>)
+    AOI_gdf<span style="color:#ff79c6">.</span>to_crs(crs)<span style="color:#ff79c6">.</span>plot(fc<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;none&#39;</span>, ec<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;k&#39;</span>, ax<span style="color:#ff79c6">=</span>ax, zorder<span style="color:#ff79c6">=</span><span style="color:#bd93f9">5</span>)
+    ax<span style="color:#ff79c6">.</span>set_xlim(x<span style="color:#ff79c6">.</span>min(), x<span style="color:#ff79c6">.</span>max())
+    ax<span style="color:#ff79c6">.</span>set_ylim(y<span style="color:#ff79c6">.</span>min(), y<span style="color:#ff79c6">.</span>max())
 </code></pre></div><p>Plot basemap data and grid boundary.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots()
-plot_basemap(ax, np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">7</span>,<span style="color:#ae81ff">14</span>]),np<span style="color:#f92672">.</span>array([<span style="color:#ae81ff">53</span>,<span style="color:#ae81ff">59</span>]))
-grid_bounds_gdf<span style="color:#f92672">.</span>plot(fc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, ec<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;r&#39;</span>, ax<span style="color:#f92672">=</span>ax, zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">13</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#ff79c6">=</span> plt<span style="color:#ff79c6">.</span>subplots()
+plot_basemap(ax, np<span style="color:#ff79c6">.</span>array([<span style="color:#bd93f9">7</span>,<span style="color:#bd93f9">14</span>]),np<span style="color:#ff79c6">.</span>array([<span style="color:#bd93f9">53</span>,<span style="color:#bd93f9">59</span>]))
+grid_bounds_gdf<span style="color:#ff79c6">.</span>plot(fc<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;none&#39;</span>, ec<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;r&#39;</span>, ax<span style="color:#ff79c6">=</span>ax, zorder<span style="color:#ff79c6">=</span><span style="color:#bd93f9">13</span>)
 </code></pre></div><p><img src="output_6_1.png" alt="png"></p>
 <h1 id="generate-example-conditioned-field">Generate example conditioned field</h1>
 <hr>
 <p>We generate a conditional field using a gaussian kernel with a functional range of 30 km, semivariance of 1, and a regional linear drift. The drift is added to the value as a multiple of the latitude and longitude.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#75715e"># structured field with a size 100x100 and a grid-size of 1x1</span>
-seed <span style="color:#f92672">=</span> <span style="color:#ae81ff">1259</span>
-grid_step <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.05</span> <span style="color:#75715e"># Degrees</span>
-lon0, lat0, lon1, lat1 <span style="color:#f92672">=</span> grid_bounds<span style="color:#f92672">.</span>bounds
-lon <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(lon0, lon1, grid_step)
-lat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>arange(lat0, lat1, grid_step)
-model <span style="color:#f92672">=</span> gs<span style="color:#f92672">.</span>Gaussian(dim<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, var<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, len_scale<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span><span style="color:#f92672">/</span>gs<span style="color:#f92672">.</span>EARTH_RADIUS, latlon<span style="color:#f92672">=</span>True)
-srf <span style="color:#f92672">=</span> gs<span style="color:#f92672">.</span>SRF(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#6272a4"># structured field with a size 100x100 and a grid-size of 1x1</span>
+seed <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">1259</span>
+grid_step <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">0.05</span> <span style="color:#6272a4"># Degrees</span>
+lon0, lat0, lon1, lat1 <span style="color:#ff79c6">=</span> grid_bounds<span style="color:#ff79c6">.</span>bounds
+lon <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>arange(lon0, lon1, grid_step)
+lat <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>arange(lat0, lat1, grid_step)
+model <span style="color:#ff79c6">=</span> gs<span style="color:#ff79c6">.</span>Gaussian(dim<span style="color:#ff79c6">=</span><span style="color:#bd93f9">2</span>, var<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>, len_scale<span style="color:#ff79c6">=</span><span style="color:#bd93f9">30</span><span style="color:#ff79c6">/</span>gs<span style="color:#ff79c6">.</span>EARTH_RADIUS, latlon<span style="color:#ff79c6">=</span>True)
+srf <span style="color:#ff79c6">=</span> gs<span style="color:#ff79c6">.</span>SRF(
     model,
-    seed<span style="color:#f92672">=</span>seed, 
-    trend<span style="color:#f92672">=</span><span style="color:#66d9ef">lambda</span> lon, lat: lon<span style="color:#f92672">*</span><span style="color:#ae81ff">0.01</span><span style="color:#f92672">-</span>lat<span style="color:#f92672">*</span><span style="color:#ae81ff">0.002</span>,
+    seed<span style="color:#ff79c6">=</span>seed, 
+    trend<span style="color:#ff79c6">=</span><span style="color:#ff79c6">lambda</span> lon, lat: lon<span style="color:#ff79c6">*</span><span style="color:#bd93f9">0.01</span><span style="color:#ff79c6">-</span>lat<span style="color:#ff79c6">*</span><span style="color:#bd93f9">0.002</span>,
 )
-srf((lat, lon), mesh_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;structured&#39;</span>);
+srf((lat, lon), mesh_type<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;structured&#39;</span>);
 </code></pre></div><p>Generate meshgrid for projection at a later stage</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">LON, LAT <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>meshgrid(srf<span style="color:#f92672">.</span>pos[<span style="color:#ae81ff">1</span>], srf<span style="color:#f92672">.</span>pos[<span style="color:#ae81ff">0</span>])
-Z_true <span style="color:#f92672">=</span> srf<span style="color:#f92672">.</span>field
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">LON, LAT <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>meshgrid(srf<span style="color:#ff79c6">.</span>pos[<span style="color:#bd93f9">1</span>], srf<span style="color:#ff79c6">.</span>pos[<span style="color:#bd93f9">0</span>])
+Z_true <span style="color:#ff79c6">=</span> srf<span style="color:#ff79c6">.</span>field
 </code></pre></div><p>Now that we have the mesh grid we can create a mask for the AOI (Area Of Interest).</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mask <span style="color:#f92672">=</span> shpvec<span style="color:#f92672">.</span>contains(AOI_gdf<span style="color:#f92672">.</span>iloc[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>geometry, LON, LAT)
-mask <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>equal(mask, False)
-mask <span style="color:#f92672">=</span> ndimage<span style="color:#f92672">.</span>binary_erosion(mask, border_value<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>, iterations<span style="color:#f92672">=</span><span style="color:#ae81ff">4</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">mask <span style="color:#ff79c6">=</span> shpvec<span style="color:#ff79c6">.</span>contains(AOI_gdf<span style="color:#ff79c6">.</span>iloc[<span style="color:#bd93f9">0</span>]<span style="color:#ff79c6">.</span>geometry, LON, LAT)
+mask <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>equal(mask, False)
+mask <span style="color:#ff79c6">=</span> ndimage<span style="color:#ff79c6">.</span>binary_erosion(mask, border_value<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>, iterations<span style="color:#ff79c6">=</span><span style="color:#bd93f9">4</span>)
 </code></pre></div><p>In order to emulate real world sampling, we generate sampling points randomly inside the AOI.
 First a samples are generated with a uniform distribution within the grid boundary.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n_pts <span style="color:#f92672">=</span> <span style="color:#ae81ff">150</span>
-np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>seed(seed)
-pts_lon <span style="color:#f92672">=</span> lon<span style="color:#f92672">.</span>min()<span style="color:#f92672">+</span>np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>rand(n_pts)<span style="color:#f92672">*</span>(lon<span style="color:#f92672">.</span>max()<span style="color:#f92672">-</span>lon<span style="color:#f92672">.</span>min())
-pts_lat <span style="color:#f92672">=</span> lat<span style="color:#f92672">.</span>min()<span style="color:#f92672">+</span>np<span style="color:#f92672">.</span>random<span style="color:#f92672">.</span>rand(n_pts)<span style="color:#f92672">*</span>(lat<span style="color:#f92672">.</span>max()<span style="color:#f92672">-</span>lat<span style="color:#f92672">.</span>min())
-pts_gdf <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>GeoDataFrame(
-    geometry<span style="color:#f92672">=</span>[Point(<span style="color:#f92672">*</span>xy) <span style="color:#66d9ef">for</span> xy <span style="color:#f92672">in</span> zip(pts_lon, pts_lat)], 
-    crs<span style="color:#f92672">=</span>epsg_geog
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">n_pts <span style="color:#ff79c6">=</span> <span style="color:#bd93f9">150</span>
+np<span style="color:#ff79c6">.</span>random<span style="color:#ff79c6">.</span>seed(seed)
+pts_lon <span style="color:#ff79c6">=</span> lon<span style="color:#ff79c6">.</span>min()<span style="color:#ff79c6">+</span>np<span style="color:#ff79c6">.</span>random<span style="color:#ff79c6">.</span>rand(n_pts)<span style="color:#ff79c6">*</span>(lon<span style="color:#ff79c6">.</span>max()<span style="color:#ff79c6">-</span>lon<span style="color:#ff79c6">.</span>min())
+pts_lat <span style="color:#ff79c6">=</span> lat<span style="color:#ff79c6">.</span>min()<span style="color:#ff79c6">+</span>np<span style="color:#ff79c6">.</span>random<span style="color:#ff79c6">.</span>rand(n_pts)<span style="color:#ff79c6">*</span>(lat<span style="color:#ff79c6">.</span>max()<span style="color:#ff79c6">-</span>lat<span style="color:#ff79c6">.</span>min())
+pts_gdf <span style="color:#ff79c6">=</span> gpd<span style="color:#ff79c6">.</span>GeoDataFrame(
+    geometry<span style="color:#ff79c6">=</span>[Point(<span style="color:#ff79c6">*</span>xy) <span style="color:#ff79c6">for</span> xy <span style="color:#ff79c6">in</span> <span style="color:#8be9fd;font-style:italic">zip</span>(pts_lon, pts_lat)], 
+    crs<span style="color:#ff79c6">=</span>epsg_geog
 )
 </code></pre></div><p>Sampling locations are moved to the grid center, and value is sampled.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pts_gdf[<span style="color:#e6db74">&#39;z&#39;</span>] <span style="color:#f92672">=</span> None
-<span style="color:#66d9ef">for</span> i, pt <span style="color:#f92672">in</span> enumerate(pts_gdf<span style="color:#f92672">.</span>geometry):
-    pt_lon, pt_lat <span style="color:#f92672">=</span> pt<span style="color:#f92672">.</span>coords[<span style="color:#ae81ff">0</span>]
-    i_lon <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>abs(lon <span style="color:#f92672">-</span> pt_lon)<span style="color:#f92672">.</span>argmin()
-    i_lat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>abs(lat <span style="color:#f92672">-</span> pt_lat)<span style="color:#f92672">.</span>argmin()
-    pts_gdf<span style="color:#f92672">.</span>loc[i,<span style="color:#e6db74">&#39;geometry&#39;</span>] <span style="color:#f92672">=</span> Point(LON[i_lat, i_lon], LAT[i_lat, i_lon])
-    pts_gdf<span style="color:#f92672">.</span>loc[i,<span style="color:#e6db74">&#39;z&#39;</span>] <span style="color:#f92672">=</span> Z_true[i_lat, i_lon]
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pts_gdf[<span style="color:#f1fa8c">&#39;z&#39;</span>] <span style="color:#ff79c6">=</span> None
+<span style="color:#ff79c6">for</span> i, pt <span style="color:#ff79c6">in</span> <span style="color:#8be9fd;font-style:italic">enumerate</span>(pts_gdf<span style="color:#ff79c6">.</span>geometry):
+    pt_lon, pt_lat <span style="color:#ff79c6">=</span> pt<span style="color:#ff79c6">.</span>coords[<span style="color:#bd93f9">0</span>]
+    i_lon <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>abs(lon <span style="color:#ff79c6">-</span> pt_lon)<span style="color:#ff79c6">.</span>argmin()
+    i_lat <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>abs(lat <span style="color:#ff79c6">-</span> pt_lat)<span style="color:#ff79c6">.</span>argmin()
+    pts_gdf<span style="color:#ff79c6">.</span>loc[i,<span style="color:#f1fa8c">&#39;geometry&#39;</span>] <span style="color:#ff79c6">=</span> Point(LON[i_lat, i_lon], LAT[i_lat, i_lon])
+    pts_gdf<span style="color:#ff79c6">.</span>loc[i,<span style="color:#f1fa8c">&#39;z&#39;</span>] <span style="color:#ff79c6">=</span> Z_true[i_lat, i_lon]
 </code></pre></div><p>Samples lying at sea are filtered from the dataset.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pts_gdf <span style="color:#f92672">=</span> gpd<span style="color:#f92672">.</span>overlay(pts_gdf, AOI_gdf, how<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;intersection&#39;</span>)
-pts_lon, pts_lat <span style="color:#f92672">=</span> [<span style="color:#f92672">*</span>zip(<span style="color:#f92672">*</span>[g<span style="color:#f92672">.</span>coords[<span style="color:#ae81ff">0</span>] <span style="color:#66d9ef">for</span> g <span style="color:#f92672">in</span> pts_gdf<span style="color:#f92672">.</span>geometry])]
-pts_lon, pts_lat <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array(pts_lon), np<span style="color:#f92672">.</span>array(pts_lat)
-pts_z <span style="color:#f92672">=</span> np<span style="color:#f92672">.</span>array(pts_gdf[<span style="color:#e6db74">&#39;z&#39;</span>])
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">pts_gdf <span style="color:#ff79c6">=</span> gpd<span style="color:#ff79c6">.</span>overlay(pts_gdf, AOI_gdf, how<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;intersection&#39;</span>)
+pts_lon, pts_lat <span style="color:#ff79c6">=</span> [<span style="color:#ff79c6">*</span><span style="color:#8be9fd;font-style:italic">zip</span>(<span style="color:#ff79c6">*</span>[g<span style="color:#ff79c6">.</span>coords[<span style="color:#bd93f9">0</span>] <span style="color:#ff79c6">for</span> g <span style="color:#ff79c6">in</span> pts_gdf<span style="color:#ff79c6">.</span>geometry])]
+pts_lon, pts_lat <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>array(pts_lon), np<span style="color:#ff79c6">.</span>array(pts_lat)
+pts_z <span style="color:#ff79c6">=</span> np<span style="color:#ff79c6">.</span>array(pts_gdf[<span style="color:#f1fa8c">&#39;z&#39;</span>])
 </code></pre></div><p>Plot the final sampling locations and the random field.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots()
-cont <span style="color:#f92672">=</span> ax<span style="color:#f92672">.</span>contourf(LON, LAT, np<span style="color:#f92672">.</span>ma<span style="color:#f92672">.</span>masked_array(Z_true, mask), zorder<span style="color:#f92672">=-</span><span style="color:#ae81ff">30</span>)
-plt<span style="color:#f92672">.</span>colorbar(cont)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#ff79c6">=</span> plt<span style="color:#ff79c6">.</span>subplots()
+cont <span style="color:#ff79c6">=</span> ax<span style="color:#ff79c6">.</span>contourf(LON, LAT, np<span style="color:#ff79c6">.</span>ma<span style="color:#ff79c6">.</span>masked_array(Z_true, mask), zorder<span style="color:#ff79c6">=-</span><span style="color:#bd93f9">30</span>)
+plt<span style="color:#ff79c6">.</span>colorbar(cont)
 plot_basemap(ax, lon, lat)
-pts_gdf<span style="color:#f92672">.</span>plot(marker<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;.&#39;</span>, edgecolor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;k&#39;</span>, facecolor<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, ax<span style="color:#f92672">=</span>ax);
-<span style="color:#66d9ef">print</span>(len(pts_gdf))
+pts_gdf<span style="color:#ff79c6">.</span>plot(marker<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;.&#39;</span>, edgecolor<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;k&#39;</span>, facecolor<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;none&#39;</span>, ax<span style="color:#ff79c6">=</span>ax);
+<span style="color:#ff79c6">print</span>(<span style="color:#8be9fd;font-style:italic">len</span>(pts_gdf))
 </code></pre></div><p><img src="output_15_1.png" alt="png"></p>
 <h1 id="time-to-krige">Time to Krige</h1>
 <hr>
 <p>First we fit a the variogram. In this case we use the fitting routine built into the gstools module. We make sure to use spherical coordinates by setting <code>latlon = true</code>.
 The <code>rescale = gs.EARTH_RADIUS</code> parameter rescales great circle distances to kilometers rather than the default: radians.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">bins <span style="color:#f92672">=</span> gs<span style="color:#f92672">.</span>standard_bins(
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">bins <span style="color:#ff79c6">=</span> gs<span style="color:#ff79c6">.</span>standard_bins(
     (pts_lat, pts_lon),
-    latlon<span style="color:#f92672">=</span>True,
-    bin_no<span style="color:#f92672">=</span><span style="color:#ae81ff">40</span>,
+    latlon<span style="color:#ff79c6">=</span>True,
+    bin_no<span style="color:#ff79c6">=</span><span style="color:#bd93f9">40</span>,
 )
-bin_c, vario <span style="color:#f92672">=</span> gs<span style="color:#f92672">.</span>vario_estimate((pts_lat, pts_lon), pts_z, bins, latlon<span style="color:#f92672">=</span>True)
+bin_c, vario <span style="color:#ff79c6">=</span> gs<span style="color:#ff79c6">.</span>vario_estimate((pts_lat, pts_lon), pts_z, bins, latlon<span style="color:#ff79c6">=</span>True)
 
-model <span style="color:#f92672">=</span> gs<span style="color:#f92672">.</span>Gaussian(rescale<span style="color:#f92672">=</span>gs<span style="color:#f92672">.</span>EARTH_RADIUS, dim<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>, latlon<span style="color:#f92672">=</span>True)
-model<span style="color:#f92672">.</span>fit_variogram(bin_c, vario, nugget<span style="color:#f92672">=</span>True)[<span style="color:#ae81ff">0</span>];
+model <span style="color:#ff79c6">=</span> gs<span style="color:#ff79c6">.</span>Gaussian(rescale<span style="color:#ff79c6">=</span>gs<span style="color:#ff79c6">.</span>EARTH_RADIUS, dim<span style="color:#ff79c6">=</span><span style="color:#bd93f9">2</span>, latlon<span style="color:#ff79c6">=</span>True)
+model<span style="color:#ff79c6">.</span>fit_variogram(bin_c, vario, nugget<span style="color:#ff79c6">=</span>True)[<span style="color:#bd93f9">0</span>];
 </code></pre></div><p>Then we plot the semivariogram for a visual inspection.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots()
-ax<span style="color:#f92672">.</span>plot(bin_c<span style="color:#f92672">*</span>model<span style="color:#f92672">.</span>rescale, model<span style="color:#f92672">.</span>variogram(bin_c))
-ax<span style="color:#f92672">.</span>plot(bin_c<span style="color:#f92672">*</span>model<span style="color:#f92672">.</span>rescale, vario, <span style="color:#e6db74">&#39;.k&#39;</span>)
-ax<span style="color:#f92672">.</span>set_xlabel(<span style="color:#e6db74">&#39;distance [km]&#39;</span>)
-ax<span style="color:#f92672">.</span>set_ylabel(<span style="color:#e6db74">&#39;Semivariance&#39;</span>)
-ax<span style="color:#f92672">.</span>annotate(
-    text<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;{} model</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Range: {:0.0f} km</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Sill: {:0.3f}</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">Nugget: {:0.3f}&#39;</span><span style="color:#f92672">.</span>format(
-        model<span style="color:#f92672">.</span>name,model<span style="color:#f92672">.</span>len_scale, model<span style="color:#f92672">.</span>sill, model<span style="color:#f92672">.</span>nugget),
-    xy<span style="color:#f92672">=</span>(<span style="color:#ae81ff">0.95</span>,<span style="color:#ae81ff">0.05</span>),
-    xycoords<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;axes fraction&#39;</span>,
-    ha<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;right&#39;</span>, ma<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;left&#39;</span>, va<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;bottom&#39;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, ax <span style="color:#ff79c6">=</span> plt<span style="color:#ff79c6">.</span>subplots()
+ax<span style="color:#ff79c6">.</span>plot(bin_c<span style="color:#ff79c6">*</span>model<span style="color:#ff79c6">.</span>rescale, model<span style="color:#ff79c6">.</span>variogram(bin_c))
+ax<span style="color:#ff79c6">.</span>plot(bin_c<span style="color:#ff79c6">*</span>model<span style="color:#ff79c6">.</span>rescale, vario, <span style="color:#f1fa8c">&#39;.k&#39;</span>)
+ax<span style="color:#ff79c6">.</span>set_xlabel(<span style="color:#f1fa8c">&#39;distance [km]&#39;</span>)
+ax<span style="color:#ff79c6">.</span>set_ylabel(<span style="color:#f1fa8c">&#39;Semivariance&#39;</span>)
+ax<span style="color:#ff79c6">.</span>annotate(
+    text<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;{} model</span><span style="color:#f1fa8c">\n</span><span style="color:#f1fa8c">Range: {:0.0f} km</span><span style="color:#f1fa8c">\n</span><span style="color:#f1fa8c">Sill: {:0.3f}</span><span style="color:#f1fa8c">\n</span><span style="color:#f1fa8c">Nugget: {:0.3f}&#39;</span><span style="color:#ff79c6">.</span>format(
+        model<span style="color:#ff79c6">.</span>name,model<span style="color:#ff79c6">.</span>len_scale, model<span style="color:#ff79c6">.</span>sill, model<span style="color:#ff79c6">.</span>nugget),
+    xy<span style="color:#ff79c6">=</span>(<span style="color:#bd93f9">0.95</span>,<span style="color:#bd93f9">0.05</span>),
+    xycoords<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;axes fraction&#39;</span>,
+    ha<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;right&#39;</span>, ma<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;left&#39;</span>, va<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;bottom&#39;</span>
 );
 </code></pre></div><p><img src="output_19_1.png" alt="png"></p>
 <p>Having a suitable semivariogram we now proceed to fit the kriging model. Here we use universal kriging, to account for regional drift.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">drift_lat</span>(lat, lon):
-    <span style="color:#66d9ef">return</span> lat
-<span style="color:#66d9ef">def</span> <span style="color:#a6e22e">drift_lon</span>(lat, lon):
-    <span style="color:#66d9ef">return</span> lon
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">def</span> <span style="color:#50fa7b">drift_lat</span>(lat, lon):
+    <span style="color:#ff79c6">return</span> lat
+<span style="color:#ff79c6">def</span> <span style="color:#50fa7b">drift_lon</span>(lat, lon):
+    <span style="color:#ff79c6">return</span> lon
 
-uk <span style="color:#f92672">=</span> gs<span style="color:#f92672">.</span>krige<span style="color:#f92672">.</span>Universal(
-    model<span style="color:#f92672">=</span>model,
-    cond_pos<span style="color:#f92672">=</span>(pts_lat, pts_lon),
-    cond_val<span style="color:#f92672">=</span>pts_z,
-    drift_functions<span style="color:#f92672">=</span>[drift_lat, drift_lon],
-    pseudo_inv<span style="color:#f92672">=</span>True,
+uk <span style="color:#ff79c6">=</span> gs<span style="color:#ff79c6">.</span>krige<span style="color:#ff79c6">.</span>Universal(
+    model<span style="color:#ff79c6">=</span>model,
+    cond_pos<span style="color:#ff79c6">=</span>(pts_lat, pts_lon),
+    cond_val<span style="color:#ff79c6">=</span>pts_z,
+    drift_functions<span style="color:#ff79c6">=</span>[drift_lat, drift_lon],
+    pseudo_inv<span style="color:#ff79c6">=</span>True,
 )
 </code></pre></div><p>Now the model fitted to the data, we can calculate expected values and variance.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Z_fit, Z_v <span style="color:#f92672">=</span> uk((lat, lon), mesh_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;structured&#34;</span>)
-Z_mean <span style="color:#f92672">=</span> uk((lat, lon), mesh_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;structured&#34;</span>, only_mean<span style="color:#f92672">=</span>True)
-Z_se <span style="color:#f92672">=</span> (Z_v<span style="color:#f92672">**</span><span style="color:#ae81ff">0.5</span>)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">Z_fit, Z_v <span style="color:#ff79c6">=</span> uk((lat, lon), mesh_type<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;structured&#34;</span>)
+Z_mean <span style="color:#ff79c6">=</span> uk((lat, lon), mesh_type<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;structured&#34;</span>, only_mean<span style="color:#ff79c6">=</span>True)
+Z_se <span style="color:#ff79c6">=</span> (Z_v<span style="color:#ff79c6">**</span><span style="color:#bd93f9">0.5</span>)
 </code></pre></div><h1 id="plot-maps">Plot maps</h1>
 <hr>
 <p>Before plotting we setup the projection: UTM zone 32N.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">T <span style="color:#f92672">=</span> ppr<span style="color:#f92672">.</span>proj<span style="color:#f92672">.</span>Transformer<span style="color:#f92672">.</span>from_crs(crs_from<span style="color:#f92672">=</span>epsg_geog, crs_to<span style="color:#f92672">=</span>epsg_plot)
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">T <span style="color:#ff79c6">=</span> ppr<span style="color:#ff79c6">.</span>proj<span style="color:#ff79c6">.</span>Transformer<span style="color:#ff79c6">.</span>from_crs(crs_from<span style="color:#ff79c6">=</span>epsg_geog, crs_to<span style="color:#ff79c6">=</span>epsg_plot)
 
-PR_X, PR_Y <span style="color:#f92672">=</span> T<span style="color:#f92672">.</span>transform(LAT, LON)
-pts_x, pts_y <span style="color:#f92672">=</span> T<span style="color:#f92672">.</span>transform(pts_lat, pts_lon)
+PR_X, PR_Y <span style="color:#ff79c6">=</span> T<span style="color:#ff79c6">.</span>transform(LAT, LON)
+pts_x, pts_y <span style="color:#ff79c6">=</span> T<span style="color:#ff79c6">.</span>transform(pts_lat, pts_lon)
 </code></pre></div><p>A color norm is used to synchronize colors across the maps, allowing easy comparison.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">norm <span style="color:#f92672">=</span> Normalize(
-    np<span style="color:#f92672">.</span>min([srf<span style="color:#f92672">.</span>field, Z_fit]),
-    np<span style="color:#f92672">.</span>max([srf<span style="color:#f92672">.</span>field, Z_fit])
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">norm <span style="color:#ff79c6">=</span> Normalize(
+    np<span style="color:#ff79c6">.</span>min([srf<span style="color:#ff79c6">.</span>field, Z_fit]),
+    np<span style="color:#ff79c6">.</span>max([srf<span style="color:#ff79c6">.</span>field, Z_fit])
 )
 </code></pre></div><p>And finally we can plot the maps.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, axes <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">2</span>, <span style="color:#ae81ff">2</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">10</span>))
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, axes <span style="color:#ff79c6">=</span> plt<span style="color:#ff79c6">.</span>subplots(<span style="color:#bd93f9">2</span>, <span style="color:#bd93f9">2</span>, figsize<span style="color:#ff79c6">=</span>(<span style="color:#bd93f9">10</span>,<span style="color:#bd93f9">10</span>))
 
-ax <span style="color:#f92672">=</span> axes[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>]
-plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#f92672">=</span>epsg_plot)
-cont <span style="color:#f92672">=</span> ax<span style="color:#f92672">.</span>contourf(PR_X, PR_Y, np<span style="color:#f92672">.</span>ma<span style="color:#f92672">.</span>masked_array(Z_fit, mask), norm<span style="color:#f92672">=</span>norm, zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-ax<span style="color:#f92672">.</span>plot(pts_x, pts_y, <span style="color:#e6db74">&#39;.k&#39;</span>, mfc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, mew<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-plt<span style="color:#f92672">.</span>colorbar(cont, ax<span style="color:#f92672">=</span>ax)
-ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#39;Krige result&#39;</span>)
+ax <span style="color:#ff79c6">=</span> axes[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">0</span>]
+plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#ff79c6">=</span>epsg_plot)
+cont <span style="color:#ff79c6">=</span> ax<span style="color:#ff79c6">.</span>contourf(PR_X, PR_Y, np<span style="color:#ff79c6">.</span>ma<span style="color:#ff79c6">.</span>masked_array(Z_fit, mask), norm<span style="color:#ff79c6">=</span>norm, zorder<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>)
+ax<span style="color:#ff79c6">.</span>plot(pts_x, pts_y, <span style="color:#f1fa8c">&#39;.k&#39;</span>, mfc<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;none&#39;</span>, mew<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>)
+plt<span style="color:#ff79c6">.</span>colorbar(cont, ax<span style="color:#ff79c6">=</span>ax)
+ax<span style="color:#ff79c6">.</span>set_title(<span style="color:#f1fa8c">&#39;Krige result&#39;</span>)
 
-ax <span style="color:#f92672">=</span> axes[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>]
-plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#f92672">=</span>epsg_plot)
-cont <span style="color:#f92672">=</span> ax<span style="color:#f92672">.</span>contourf(PR_X, PR_Y, np<span style="color:#f92672">.</span>ma<span style="color:#f92672">.</span>masked_array(srf<span style="color:#f92672">.</span>field, mask), norm<span style="color:#f92672">=</span>norm, zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-ax<span style="color:#f92672">.</span>plot(pts_x, pts_y, <span style="color:#e6db74">&#39;.k&#39;</span>, mfc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, mew<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-plt<span style="color:#f92672">.</span>colorbar(cont, ax<span style="color:#f92672">=</span>ax)
-ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#39;Example field&#39;</span>)
+ax <span style="color:#ff79c6">=</span> axes[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">1</span>]
+plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#ff79c6">=</span>epsg_plot)
+cont <span style="color:#ff79c6">=</span> ax<span style="color:#ff79c6">.</span>contourf(PR_X, PR_Y, np<span style="color:#ff79c6">.</span>ma<span style="color:#ff79c6">.</span>masked_array(srf<span style="color:#ff79c6">.</span>field, mask), norm<span style="color:#ff79c6">=</span>norm, zorder<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>)
+ax<span style="color:#ff79c6">.</span>plot(pts_x, pts_y, <span style="color:#f1fa8c">&#39;.k&#39;</span>, mfc<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;none&#39;</span>, mew<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>)
+plt<span style="color:#ff79c6">.</span>colorbar(cont, ax<span style="color:#ff79c6">=</span>ax)
+ax<span style="color:#ff79c6">.</span>set_title(<span style="color:#f1fa8c">&#39;Example field&#39;</span>)
 
 
-ax <span style="color:#f92672">=</span> axes[<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">0</span>]
-plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#f92672">=</span>epsg_plot)
-cont <span style="color:#f92672">=</span> ax<span style="color:#f92672">.</span>contourf(PR_X, PR_Y, np<span style="color:#f92672">.</span>ma<span style="color:#f92672">.</span>masked_array(Z_se<span style="color:#f92672">*</span><span style="color:#ae81ff">2</span>, mask), zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-ax<span style="color:#f92672">.</span>plot(pts_x, pts_y, <span style="color:#e6db74">&#39;.k&#39;</span>, mfc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, mew<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-plt<span style="color:#f92672">.</span>colorbar(cont, ax<span style="color:#f92672">=</span>ax)
-ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#39;2$\sigma$&#39;</span>)
+ax <span style="color:#ff79c6">=</span> axes[<span style="color:#bd93f9">1</span>,<span style="color:#bd93f9">0</span>]
+plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#ff79c6">=</span>epsg_plot)
+cont <span style="color:#ff79c6">=</span> ax<span style="color:#ff79c6">.</span>contourf(PR_X, PR_Y, np<span style="color:#ff79c6">.</span>ma<span style="color:#ff79c6">.</span>masked_array(Z_se<span style="color:#ff79c6">*</span><span style="color:#bd93f9">2</span>, mask), zorder<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>)
+ax<span style="color:#ff79c6">.</span>plot(pts_x, pts_y, <span style="color:#f1fa8c">&#39;.k&#39;</span>, mfc<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;none&#39;</span>, mew<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>)
+plt<span style="color:#ff79c6">.</span>colorbar(cont, ax<span style="color:#ff79c6">=</span>ax)
+ax<span style="color:#ff79c6">.</span>set_title(<span style="color:#f1fa8c">&#39;2$\sigma$&#39;</span>)
 
-ax <span style="color:#f92672">=</span> axes[<span style="color:#ae81ff">1</span>,<span style="color:#ae81ff">1</span>]
-plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#f92672">=</span>epsg_plot)
-cont <span style="color:#f92672">=</span> ax<span style="color:#f92672">.</span>contourf(PR_X, PR_Y, np<span style="color:#f92672">.</span>ma<span style="color:#f92672">.</span>masked_array(Z_mean, mask), zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-ax<span style="color:#f92672">.</span>plot(pts_x, pts_y, <span style="color:#e6db74">&#39;.k&#39;</span>, mfc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, mew<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-plt<span style="color:#f92672">.</span>colorbar(cont, ax<span style="color:#f92672">=</span>ax)
-ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#39;Linear drift&#39;</span>);
+ax <span style="color:#ff79c6">=</span> axes[<span style="color:#bd93f9">1</span>,<span style="color:#bd93f9">1</span>]
+plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#ff79c6">=</span>epsg_plot)
+cont <span style="color:#ff79c6">=</span> ax<span style="color:#ff79c6">.</span>contourf(PR_X, PR_Y, np<span style="color:#ff79c6">.</span>ma<span style="color:#ff79c6">.</span>masked_array(Z_mean, mask), zorder<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>)
+ax<span style="color:#ff79c6">.</span>plot(pts_x, pts_y, <span style="color:#f1fa8c">&#39;.k&#39;</span>, mfc<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;none&#39;</span>, mew<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>)
+plt<span style="color:#ff79c6">.</span>colorbar(cont, ax<span style="color:#ff79c6">=</span>ax)
+ax<span style="color:#ff79c6">.</span>set_title(<span style="color:#f1fa8c">&#39;Linear drift&#39;</span>);
 </code></pre></div><p><img src="output_29_1.png" alt="png"></p>
 <h1 id="plot-realisations-of-the-resulting-random-field">Plot realisations of the resulting random field</h1>
 <hr>
 <p>Following the same procedure as above we can plot realisations of the random field. First we generate conditioned surfaces using the universal kriging fit as the condition.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">realisations <span style="color:#f92672">=</span> []
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>):
-    cond_srf <span style="color:#f92672">=</span> gs<span style="color:#f92672">.</span>CondSRF(uk)
-    cond_srf((lat, lon), mesh_type<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;structured&#34;</span>)
-    realisations<span style="color:#f92672">.</span>append(cond_srf)
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">norm <span style="color:#f92672">=</span> Normalize(
-    min([<span style="color:#f92672">*</span>[r<span style="color:#f92672">.</span>field<span style="color:#f92672">.</span>min() <span style="color:#66d9ef">for</span> r <span style="color:#f92672">in</span> realisations], Z_fit<span style="color:#f92672">.</span>min(), srf<span style="color:#f92672">.</span>field<span style="color:#f92672">.</span>min()]),
-    max([<span style="color:#f92672">*</span>[r<span style="color:#f92672">.</span>field<span style="color:#f92672">.</span>max() <span style="color:#66d9ef">for</span> r <span style="color:#f92672">in</span> realisations], Z_fit<span style="color:#f92672">.</span>max(), srf<span style="color:#f92672">.</span>field<span style="color:#f92672">.</span>max()]),
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">realisations <span style="color:#ff79c6">=</span> []
+<span style="color:#ff79c6">for</span> i <span style="color:#ff79c6">in</span> <span style="color:#8be9fd;font-style:italic">range</span>(<span style="color:#bd93f9">4</span>):
+    cond_srf <span style="color:#ff79c6">=</span> gs<span style="color:#ff79c6">.</span>CondSRF(uk)
+    cond_srf((lat, lon), mesh_type<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#34;structured&#34;</span>)
+    realisations<span style="color:#ff79c6">.</span>append(cond_srf)
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">norm <span style="color:#ff79c6">=</span> Normalize(
+    <span style="color:#8be9fd;font-style:italic">min</span>([<span style="color:#ff79c6">*</span>[r<span style="color:#ff79c6">.</span>field<span style="color:#ff79c6">.</span>min() <span style="color:#ff79c6">for</span> r <span style="color:#ff79c6">in</span> realisations], Z_fit<span style="color:#ff79c6">.</span>min(), srf<span style="color:#ff79c6">.</span>field<span style="color:#ff79c6">.</span>min()]),
+    <span style="color:#8be9fd;font-style:italic">max</span>([<span style="color:#ff79c6">*</span>[r<span style="color:#ff79c6">.</span>field<span style="color:#ff79c6">.</span>max() <span style="color:#ff79c6">for</span> r <span style="color:#ff79c6">in</span> realisations], Z_fit<span style="color:#ff79c6">.</span>max(), srf<span style="color:#ff79c6">.</span>field<span style="color:#ff79c6">.</span>max()]),
 )
-</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, axes <span style="color:#f92672">=</span> plt<span style="color:#f92672">.</span>subplots(<span style="color:#ae81ff">3</span>, <span style="color:#ae81ff">2</span>, figsize<span style="color:#f92672">=</span>(<span style="color:#ae81ff">10</span>,<span style="color:#ae81ff">15</span>))
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python">fig, axes <span style="color:#ff79c6">=</span> plt<span style="color:#ff79c6">.</span>subplots(<span style="color:#bd93f9">3</span>, <span style="color:#bd93f9">2</span>, figsize<span style="color:#ff79c6">=</span>(<span style="color:#bd93f9">10</span>,<span style="color:#bd93f9">15</span>))
 
-ax <span style="color:#f92672">=</span> axes[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">0</span>]
-plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#f92672">=</span>epsg_plot)
-cont <span style="color:#f92672">=</span> ax<span style="color:#f92672">.</span>contourf(PR_X, PR_Y, np<span style="color:#f92672">.</span>ma<span style="color:#f92672">.</span>masked_array(Z_fit, mask), norm<span style="color:#f92672">=</span>norm, zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-ax<span style="color:#f92672">.</span>plot(pts_x, pts_y, <span style="color:#e6db74">&#39;.k&#39;</span>, mfc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, mew<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-plt<span style="color:#f92672">.</span>colorbar(cont, ax<span style="color:#f92672">=</span>ax)
-ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#39;Krige result&#39;</span>)
+ax <span style="color:#ff79c6">=</span> axes[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">0</span>]
+plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#ff79c6">=</span>epsg_plot)
+cont <span style="color:#ff79c6">=</span> ax<span style="color:#ff79c6">.</span>contourf(PR_X, PR_Y, np<span style="color:#ff79c6">.</span>ma<span style="color:#ff79c6">.</span>masked_array(Z_fit, mask), norm<span style="color:#ff79c6">=</span>norm, zorder<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>)
+ax<span style="color:#ff79c6">.</span>plot(pts_x, pts_y, <span style="color:#f1fa8c">&#39;.k&#39;</span>, mfc<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;none&#39;</span>, mew<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>)
+plt<span style="color:#ff79c6">.</span>colorbar(cont, ax<span style="color:#ff79c6">=</span>ax)
+ax<span style="color:#ff79c6">.</span>set_title(<span style="color:#f1fa8c">&#39;Krige result&#39;</span>)
 
-ax <span style="color:#f92672">=</span> axes[<span style="color:#ae81ff">0</span>,<span style="color:#ae81ff">1</span>]
-plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#f92672">=</span>epsg_plot)
-cont <span style="color:#f92672">=</span> ax<span style="color:#f92672">.</span>contourf(PR_X, PR_Y, np<span style="color:#f92672">.</span>ma<span style="color:#f92672">.</span>masked_array(srf<span style="color:#f92672">.</span>field, mask), norm<span style="color:#f92672">=</span>norm, zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-ax<span style="color:#f92672">.</span>plot(pts_x, pts_y, <span style="color:#e6db74">&#39;.k&#39;</span>, mfc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, mew<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-plt<span style="color:#f92672">.</span>colorbar(cont, ax<span style="color:#f92672">=</span>ax)
-ax<span style="color:#f92672">.</span>set_title(<span style="color:#e6db74">&#39;Example field&#39;</span>)
+ax <span style="color:#ff79c6">=</span> axes[<span style="color:#bd93f9">0</span>,<span style="color:#bd93f9">1</span>]
+plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#ff79c6">=</span>epsg_plot)
+cont <span style="color:#ff79c6">=</span> ax<span style="color:#ff79c6">.</span>contourf(PR_X, PR_Y, np<span style="color:#ff79c6">.</span>ma<span style="color:#ff79c6">.</span>masked_array(srf<span style="color:#ff79c6">.</span>field, mask), norm<span style="color:#ff79c6">=</span>norm, zorder<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>)
+ax<span style="color:#ff79c6">.</span>plot(pts_x, pts_y, <span style="color:#f1fa8c">&#39;.k&#39;</span>, mfc<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;none&#39;</span>, mew<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>)
+plt<span style="color:#ff79c6">.</span>colorbar(cont, ax<span style="color:#ff79c6">=</span>ax)
+ax<span style="color:#ff79c6">.</span>set_title(<span style="color:#f1fa8c">&#39;Example field&#39;</span>)
 
-<span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">4</span>):
-    ax <span style="color:#f92672">=</span> axes[<span style="color:#ae81ff">1</span> <span style="color:#f92672">+</span> (i<span style="color:#f92672">//</span><span style="color:#ae81ff">2</span>), i<span style="color:#f92672">%</span><span style="color:#ae81ff">2</span>]
-    plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#f92672">=</span>epsg_plot)
-    cont <span style="color:#f92672">=</span> ax<span style="color:#f92672">.</span>contourf(PR_X, PR_Y, np<span style="color:#f92672">.</span>ma<span style="color:#f92672">.</span>masked_array(realisations[i]<span style="color:#f92672">.</span>field, mask), norm<span style="color:#f92672">=</span>norm, zorder<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>)
-    ax<span style="color:#f92672">.</span>plot(pts_x, pts_y, <span style="color:#e6db74">&#39;.k&#39;</span>, mfc<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;none&#39;</span>, mew<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>)
-    plt<span style="color:#f92672">.</span>colorbar(cont, ax<span style="color:#f92672">=</span>ax)
-    ax<span style="color:#f92672">.</span>set_title(f<span style="color:#e6db74">&#39;Realisation {i+1}&#39;</span>)
+<span style="color:#ff79c6">for</span> i <span style="color:#ff79c6">in</span> <span style="color:#8be9fd;font-style:italic">range</span>(<span style="color:#bd93f9">4</span>):
+    ax <span style="color:#ff79c6">=</span> axes[<span style="color:#bd93f9">1</span> <span style="color:#ff79c6">+</span> (i<span style="color:#ff79c6">//</span><span style="color:#bd93f9">2</span>), i<span style="color:#ff79c6">%</span><span style="color:#bd93f9">2</span>]
+    plot_basemap(ax, PR_X, PR_Y, crs<span style="color:#ff79c6">=</span>epsg_plot)
+    cont <span style="color:#ff79c6">=</span> ax<span style="color:#ff79c6">.</span>contourf(PR_X, PR_Y, np<span style="color:#ff79c6">.</span>ma<span style="color:#ff79c6">.</span>masked_array(realisations[i]<span style="color:#ff79c6">.</span>field, mask), norm<span style="color:#ff79c6">=</span>norm, zorder<span style="color:#ff79c6">=</span><span style="color:#bd93f9">0</span>)
+    ax<span style="color:#ff79c6">.</span>plot(pts_x, pts_y, <span style="color:#f1fa8c">&#39;.k&#39;</span>, mfc<span style="color:#ff79c6">=</span><span style="color:#f1fa8c">&#39;none&#39;</span>, mew<span style="color:#ff79c6">=</span><span style="color:#bd93f9">1</span>)
+    plt<span style="color:#ff79c6">.</span>colorbar(cont, ax<span style="color:#ff79c6">=</span>ax)
+    ax<span style="color:#ff79c6">.</span>set_title(f<span style="color:#f1fa8c">&#39;Realisation {i+1}&#39;</span>)
 </code></pre></div><p><img src="output_33_0.png" alt="png"></p>
 <h3 id="imports">
 Imports
 </h3>
 <p><a href="/repository/kriging/">Top</a></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#f92672">%</span>matplotlib inline
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#282a36;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-python" data-lang="python"><span style="color:#ff79c6">%</span>matplotlib inline
 
-<span style="color:#f92672">import</span> numpy <span style="color:#f92672">as</span> np
-<span style="color:#f92672">import</span> matplotlib.pyplot <span style="color:#f92672">as</span> plt
-<span style="color:#f92672">import</span> geopandas <span style="color:#f92672">as</span> gpd
-<span style="color:#f92672">import</span> gstools <span style="color:#f92672">as</span> gs
-<span style="color:#f92672">import</span> pyproj <span style="color:#f92672">as</span> ppr
+<span style="color:#ff79c6">import</span> numpy <span style="color:#ff79c6">as</span> np
+<span style="color:#ff79c6">import</span> matplotlib.pyplot <span style="color:#ff79c6">as</span> plt
+<span style="color:#ff79c6">import</span> geopandas <span style="color:#ff79c6">as</span> gpd
+<span style="color:#ff79c6">import</span> gstools <span style="color:#ff79c6">as</span> gs
+<span style="color:#ff79c6">import</span> pyproj <span style="color:#ff79c6">as</span> ppr
 
-<span style="color:#f92672">from</span> copy <span style="color:#f92672">import</span> copy
-<span style="color:#f92672">from</span> scipy <span style="color:#f92672">import</span> ndimage
-<span style="color:#f92672">from</span> shapely.geometry <span style="color:#f92672">import</span> Polygon
-<span style="color:#f92672">from</span> shapely.geometry <span style="color:#f92672">import</span> Point
-<span style="color:#f92672">import</span> shapely.vectorized <span style="color:#f92672">as</span> shpvec
-<span style="color:#f92672">from</span> matplotlib.colors <span style="color:#f92672">import</span> Normalize
+<span style="color:#ff79c6">from</span> copy <span style="color:#ff79c6">import</span> copy
+<span style="color:#ff79c6">from</span> scipy <span style="color:#ff79c6">import</span> ndimage
+<span style="color:#ff79c6">from</span> shapely.geometry <span style="color:#ff79c6">import</span> Polygon
+<span style="color:#ff79c6">from</span> shapely.geometry <span style="color:#ff79c6">import</span> Point
+<span style="color:#ff79c6">import</span> shapely.vectorized <span style="color:#ff79c6">as</span> shpvec
+<span style="color:#ff79c6">from</span> matplotlib.colors <span style="color:#ff79c6">import</span> Normalize
 </code></pre></div>
 </div>
 
